@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>{% block title %}{% endblock %}</title>
+
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width,initial-scale=1"/>
+
+	<link rel="shortcut icon" href="favicon.ico" />
+	
+	{% block style %}{% endblock %}
+
+	<link rel="stylesheet" href="css/lunchsite.css">
+	<link rel="stylesheet" href="css/formValidation.min.css">
+	<link rel="stylesheet" href="css/select2.min.css">
+	
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/formValidation.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/select2.min.js"></script>
+	<script type="text/javascript" src="js/bootbox.js"></script>
+	<script type="text/javascript" src="js/lunchsite.js"></script>
+	
+	{% block script %}{% endblock %}
+	
+</head>
+<body>
+	
+	{% block header %}{% endblock %}
+
+	<main class="container">
+		{% block sections %}{% endblock %}
+	</main>
+
+	{% block footer %}{% endblock %}
+	
+</body>
+
+{% block lateScript %}{% endblock %}
+
+</html>

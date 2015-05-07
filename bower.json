@@ -1,0 +1,27 @@
+{
+  "name": "lunchsite",
+  "version": "0.1.0",
+  "authors": [
+    "Bart Wttewaall <b.wttewaall@recognize.nl>"
+  ],
+  "moduleType": [
+    "node"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.4",
+    "select2": "~4.0.0",
+    "jquery": "~2.1.4",
+    "form.validation": "*",
+    "bootbox": "~4.4.0",
+    "momentjs": "~2.10.2",
+    "gulp": "~3.8.11"
+  }
+}
