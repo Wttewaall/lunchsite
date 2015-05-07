@@ -22,6 +22,7 @@
     "form.validation": "*",
     "bootbox": "~4.4.0",
     "momentjs": "~2.10.2",
-    "gulp": "~3.8.11"
+    "gulp": "~3.8.11",
+    "eonasdan-bootstrap-datetimepicker": "~4.7.14"
   }
 }

@@ -34,12 +34,15 @@ gulp.task('deps', function () {
 
 	var styles = gulp.src([
 		'bower_components/form.validation/dist/css/formValidation.min.css',
+		'bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
 		'bower_components/select2/dist/css/select2.min.css'
 	]).pipe(gulp.dest('web/css/'));
 
 	var thirdpartyScripts = gulp.src([
 		'bower_components/jquery/dist/jquery.min.js',
 		'bower_components/bootstrap/dist/js/bootstrap.min.js',
+		'bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
+		'bower_components/moment/min/moment-with-locales.min.js',
 		'bower_components/select2/dist/js/select2.min.js',
 		'bower_components/bootbox/bootbox.js'
 	]).pipe(gulp.dest('web/js/'));
