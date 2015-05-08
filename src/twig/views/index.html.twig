@@ -1,10 +1,78 @@
 {% extends "../base.html.twig" %}
 
+{% block header %}
+<div class="container">
+	
+	<div class="page-header">
+		<h1>Lunchsite</h1>
+	</div>
+	
+	<div class="well">
+		<a href="/transaction.html" class="btn btn-primary">Voeg een transactie toe</a>
+	</div>
+	
+</div>
+{% endblock %}
+
 {% block sections %}
 
-<div>
-	<a href="/transaction.html" class="btn btn-primary">Voeg een transactie toe</a>
-	<a class="btn btn-primary">Bekijk het transactie overzicht</a>
-</div>
+	<div role="tabpanel">
+
+		<!-- Nav tabs -->
+		<ul class="nav nav-tabs" role="tablist">
+			<li role="presentation" class="active"><a href="#overview" aria-controls="overview" role="tab" data-toggle="tab">Betaaloverzicht</a></li>
+			<li role="presentation"><a href="#transactions" aria-controls="transactions" role="tab" data-toggle="tab">Alle transacties</a></li>
+		</ul>
+
+		<!-- Tab panes -->
+		<div class="tab-content">
+			
+			<div role="tabpanel" class="tab-pane active" id="overview">
+				<section class="users-overview">
+					{% set u1  = { id:  7,	name: "Christiaan de Jong",	type: "EMPLOYEE",	amount: 71.00 } %}
+					{% set u2  = { id: 11,	name: "Willem Slaghekke",	type: "EMPLOYEE",	amount: 67.31 } %}
+					{% set u3  = { id:  5,	name: "Tom Knol",			type: "EMPLOYEE",	amount: 53.47 } %}
+					{% set u4  = { id:  9,	name: "Coen Wessels",		type: "EMPLOYEE",	amount: 51.16 } %}
+					{% set u5  = { id:  8,	name: "Sander Groen",		type: "EMPLOYEE",	amount: 50.78 } %}
+					{% set u6  = { id: 12,	name: "Tom jr Reinders",	type: "INTERN",		amount: 18.67 } %}
+					{% set u7  = { id:  3,	name: "Ramon Brouwers",		type: "EMPLOYEE",	amount: 10.00 } %}
+					{% set u8  = { id:  4,	name: "Bart Wttewaall",		type: "EMPLOYEE",	amount: 10.00 } %}
+					{% set u9  = { id:  2,	name: "Peter Kwarts",		type: "EMPLOYEE",	amount: 4.17 } %}
+					{% set u10 = { id: 13,	name: "Kevin te Raa",		type: "INTERN",		amount: 0.00 } %}
+					{% set u11 = { id: 16,	name: "Bart jr Kuipers",	type: "INTERN",		amount: 0.00 } %}
+					{% set u12 = { id: 10,	name: "Jelle Overbeek",		type: "INTERN",		amount: -3.89 } %}
+
+					{% set userData = [u1, u2, u3, u4, u5, u6, u7, u8, u9, u10, u11, u12] %}
+
+					{% include "../components/table_users_overview.html.twig" with {userData: userData} %}
+				</section>
+			</div>
+			
+			<div role="tabpanel" class="tab-pane" id="transactions">
+				<section class="transactions-list">	
+					
+					{% set t1  = {date: "2015-04-20 10:00:06", acc_id: "8",	acc_name: "Sander Groen", acc_type: "EMPLOYEE",	cacc_id: "15",	cacc_name: "AH", cacc_type: "SUPERMARKET",					amount:2922,	status:"AF",	type:"BANK", description:""} %}
+					{% set t2  = {date: "2015-04-28 09:00:00", acc_id: "17",acc_name: "Oude pot", acc_type: "POT",		cacc_id: "1",	cacc_name: "Lunch pot", cacc_type: "POT",			amount:1505,	status:"AF",	type:"CASH", description:""} %}
+					{% set t3  = {date: "2015-04-28 09:00:01", acc_id: "1",	acc_name: "Lunch pot", acc_type: "POT",		cacc_id: "7",	cacc_name: "Christiaan de Jong", cacc_type: "EMPLOYEE",	amount:2100,	status:"AF",	type:"BANK", description:""} %}
+					{% set t4  = {date: "2015-04-28 09:00:01", acc_id: "1",	acc_name: "Lunch pot", acc_type: "POT",		cacc_id: "11",	cacc_name: "Willem Slaghekke", cacc_type: "EMPLOYEE",	amount:2731,	status:"AF",	type:"BANK", description:""} %}
+					{% set t5  = {date: "2015-04-28 09:00:01", acc_id: "1",	acc_name: "Lunch pot", acc_type: "POT",		cacc_id: "9",	cacc_name: "Coen Wessels", cacc_type: "EMPLOYEE",		amount:1116,	status:"AF",	type:"BANK", description:""} %}
+					{% set t6  = {date: "2015-04-28 09:00:01", acc_id: "1",	acc_name: "Lunch pot", acc_type: "POT",		cacc_id: "8",	cacc_name: "Sander Groen", cacc_type: "EMPLOYEE",		amount:3000,	status:"AF",	type:"BANK", description:""} %}
+					{% set t7  = {date: "2015-04-28 09:00:01", acc_id: "1",	acc_name: "Lunch pot", acc_type: "POT",		cacc_id: "5",	cacc_name: "Tom Knol", cacc_type: "EMPLOYEE",			amount:347,		status:"AF",	type:"BANK", description:""} %}
+					{% set t8  = {date: "2015-04-28 09:00:01", acc_id: "4",	acc_name: "Bart Wttewaall", acc_type: "EMPLOYEE",	cacc_id: "1",	cacc_name: "Lunch pot", cacc_type: "POT",			amount:4000,	status:"AF",	type:"BANK", description:""} %}
+					{% set t9  = {date: "2015-04-28 12:54:00", acc_id: "12",acc_name: "Tom jr Reinders", acc_type: "INTERN",	cacc_id: "15",	cacc_name: "AH", cacc_type: "SUPERMARKET",					amount:2133,	status:"AF",	type:"BANK", description:""} %}
+					{% set t10 = {date: "2015-04-30 13:09:00", acc_id: "10",acc_name: "Jelle Overbeek", acc_type: "INTERN",	cacc_id: "15",	cacc_name: "AH", cacc_type: "SUPERMARKET",					amount:2389,	status:"AF",	type:"BANK", description:""} %}
+					{% set t11 = {date: "2015-05-06 10:28:44", acc_id: "2",	acc_name: "Peter Kwarts", acc_type: "EMPLOYEE",	cacc_id: "15",	cacc_name: "AH", cacc_type: "SUPERMARKET",					amount:2583,	status:"AF",	type:"BANK", description:"Suck it"} %}
+					{% set t12 = {date: "2015-05-06 10:28:44", acc_id: "2",	acc_name: "Peter Kwarts", acc_type: "EMPLOYEE",	cacc_id: "15",	cacc_name: "AH", cacc_type: "SUPERMARKET",					amount:2000,	status:"AF",	type:"CASH", description:"Suck it"} %}
+					{% set t13 = {date: "2015-05-07 12:38:21", acc_id: "16",acc_name: "Bart jr Kuipers", acc_type: "INTERN",	cacc_id: "1",	cacc_name: "Lunch pot", cacc_type: "POT",			amount:2500,	status:"AF",	type:"CASH", description:""} %}
+
+					{% set transactions = [t13, t12, t11, t10, t9, t8, t7, t6, t5, t4, t3, t2, t1] %}
+
+					{% include "../components/table_transactions_list.html.twig" with {transactions: transactions} %}
+				</section>
+			</div>
+			
+		</div>
+
+	</div>
 
 {% endblock %}

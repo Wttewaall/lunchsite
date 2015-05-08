@@ -1,0 +1,73 @@
+{% set accounts = (accounts is defined) ? accounts : [] %}
+{% set transactionTypes = (transactionTypes is defined) ? transactionTypes : [] %}
+
+<form class="form-horizontal" autocomplete="off">
+	
+	<div class="form-group">
+		<label for="account_name" class="col-sm-2 control-label">Van rekening</label>
+		<div class="col-sm-10">
+			<select class="form-control select2" id="account_name">
+			{% for account in accounts %}
+				<option name="account_name" value="{{ account.id }}">{{ [account.first_name, account.last_name]|join(' ') }}</option>
+			{% endfor %}
+			</select>
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label for="counterparty_account_name" class="col-sm-2 control-label">Naar tegenrekening</label>
+		<div class="col-sm-10">
+			<select class="form-control select2" id="counterparty_account_name">
+			{% for account in accounts %}
+				<option name="counterparty_account_name" value="{{ account.id }}">{{ [account.first_name, account.last_name]|join(' ') }}</option>
+			{% endfor %}
+			</select>
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label for="transaction_amount_name" class="col-sm-2 control-label">Bedrag</label>
+		<div class="col-sm-10">
+			<div class="input-group col-sm-2">
+				<div class="input-group-addon">&euro;</div>
+				<input type="text" class="form-control" id="transaction_amount_name" name="transaction_amount_name" placeholder="0.00">
+			</div>
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label for="transaction_type_code" class="col-sm-2 control-label">Betaalwijze</label>
+		<div class="col-sm-10">
+			<div class="btn-group" data-toggle="buttons" id="transaction_type_code">
+			{% for type in transactionTypes %}
+				{% set active = (loop.index0 == 0) ? 'active' : '' %}
+				{% set checked = (loop.index0 == 0) ? 'checked="checked"' : '' %}
+				
+				<label class="btn btn-default {{ active}}">
+					<input type="radio" name="transaction_type_code" value="{{ type.id }}" {{ checked }}> {{ type.code|title }}
+				</label>
+			{% endfor %}
+			</div>
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label for="transaction_date" class="col-sm-2 control-label">Datum</label>
+		<div class="col-sm-10">
+			<div class='input-group date col-sm-3' id='transaction_date'>
+				<input type="text" class="form-control" name="transaction_date">
+				<span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+			</div>
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<div class="col-sm-10 col-sm-offset-2">
+			<button type="button" class="btn btn-default btn-cancel">Annuleren</button>
+			<button type="submit" class="btn btn-primary btn-submit">Verzenden</button>
+		</div>
+	</div>
+	
+</form>

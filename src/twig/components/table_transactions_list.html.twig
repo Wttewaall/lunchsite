@@ -1,0 +1,37 @@
+{% set transactions = (transactions is defined) ? transactions : [] %}
+
+<div class="table-responsive">
+	<table class="table table-striped">
+		
+		<thead>
+			<tr>
+				<th>datum</th>
+				<th>rekening</th>
+				<th>tegenrekening</th>
+				<th>bedrag</th>
+				<th>status</th>
+				<th>wijze</th>
+				<th>omschrijving</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+		{% for transaction in transactions %}
+			{% set accIcon = (transaction.acc_type == "POT") ? 'piggy-bank' : (transaction.acc_type == "EMPLOYEE") ? 'user': (transaction.acc_type == "INTERN") ? 'education' : 'apple' %}
+			{% set caccIcon = (transaction.cacc_type == "POT") ? 'piggy-bank' : (transaction.cacc_type == "EMPLOYEE") ? 'user': (transaction.cacc_type == "INTERN") ? 'education' : 'apple' %}
+			{% set typeIcon = (transaction.type == "BANK") ? 'credit-card' : (transaction.type == "CASH") ? 'euro': 'heart-empty' %}
+			
+			<tr>
+				<td>{{ transaction.date|date('d-m-Y') }}</td>
+				<td><a href="#{{ transaction.acc_id }}"><i class="glyphicon glyphicon-{{ accIcon }}"></i> {{ transaction.acc_name }}</a></td>
+				<td><a href="#{{ transaction.cacc_id }}"><i class="glyphicon glyphicon-{{ caccIcon }}"></i> {{ transaction.cacc_name }}</a></td>
+				<td class="prefix-euro">{{ (transaction.amount / 100)|number_format(2) }}</td>
+				<td>{{ transaction.status }}</td>
+				<td><i class="glyphicon glyphicon-{{ typeIcon }}"></i> {{ transaction.type }}</td>
+				<td>{{ transaction.description }}</td>
+			</tr>
+		{% endfor %}
+		</tbody>
+		
+	</table>
+</div>

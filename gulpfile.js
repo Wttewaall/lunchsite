@@ -54,11 +54,6 @@ gulp.task('deps', function () {
 	]).pipe(concat('formValidation.js'))
 	.pipe(gulp.dest('web/js/'));
 	
-	var scripts = gulp.src([
-		'src/js/**/*.js'
-	]).pipe(concat('lunchsite.js'))
-	.pipe(gulp.dest('web/js/'));
-	
 	// ---- merge ----
 
     return merge(
@@ -74,6 +69,14 @@ gulp.task('less', function () {
 		.pipe(gulp.dest('web/css/'));
 });
 
+// JS
+gulp.task('js', function () {
+	return gulp.src([
+		'src/js/**/*.js'
+	]).pipe(concat('lunchsite.js'))
+	.pipe(gulp.dest('web/js/'));
+});
+
 // Twig
 gulp.task('twig', function () {
 	return gulp.src([
@@ -87,13 +90,23 @@ gulp.task('twig', function () {
 });
 
 // Watchers
-gulp.task('watchtwig', function () {
-	gulp.watch('src/twig/**/*.twig', ['twig']);
-});
-
-// Watchers
 gulp.task('watchless', function () {
     gulp.watch('src/less/**/*.less', ['less']);
 });
 
-gulp.task('default', ['deps', 'less', 'twig']);
+gulp.task('watchless', function () {
+    gulp.watch('src/js/**/*.js', ['js']);
+});
+
+gulp.task('watchtwig', function () {
+	gulp.watch('src/twig/**/*.twig', ['twig']);
+});
+
+gulp.task('watch', function () {
+	gulp.watch('src/less/**/*.less', ['less']);
+	gulp.watch('src/js/**/*.js', ['js']);
+	gulp.watch('src/twig/**/*.twig', ['twig']);
+});
+
+// Default
+gulp.task('default', ['deps', 'less', 'js', 'twig']);

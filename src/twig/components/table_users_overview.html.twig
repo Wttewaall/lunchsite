@@ -1,0 +1,26 @@
+{% set userData = (userData is defined) ? userData : [] %}
+
+<div class="table-responsive">
+	<table class="table">
+		
+		<thead>
+			<tr>
+				<th>Naam</th>
+				<th>Te betalen</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+		{% for user in userData %}
+			{% set accIcon = (user.type == "POT") ? 'piggy-bank' : (user.type == "EMPLOYEE") ? 'user': (user.type == "INTERN") ? 'education' : 'apple' %}
+			{% set amountStyle = (user.amount > 50) ? 'danger' : (user.amount > 0) ? '' : 'success' %}
+			
+			<tr class="{{ amountStyle }}">
+				<td><a href="#{{ user.id }}"><i class="glyphicon glyphicon-{{ accIcon }}"></i> {{ user.name }}</a></td>
+				<td class="prefix-euro">{{ user.amount|number_format(2) }}</td>
+			</tr>
+		{% endfor %}
+		</tbody>
+		
+	</table>
+</div>
