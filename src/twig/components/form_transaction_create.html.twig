@@ -2,11 +2,13 @@
 {% set transactionTypes = (transactionTypes is defined) ? transactionTypes : [] %}
 
 <form class="form-horizontal" autocomplete="off">
+
+	<legend>Nieuwe transactie</legend>
 	
 	<div class="form-group">
 		<label for="account_name" class="col-sm-2 control-label">Van rekening</label>
 		<div class="col-sm-10">
-			<select class="form-control select2" id="account_name">
+			<select class="select2" id="account_name">
 			{% for account in accounts %}
 				<option name="account_name" value="{{ account.id }}">{{ [account.first_name, account.last_name]|join(' ') }}</option>
 			{% endfor %}
@@ -17,7 +19,7 @@
 	<div class="form-group">
 		<label for="counterparty_account_name" class="col-sm-2 control-label">Naar tegenrekening</label>
 		<div class="col-sm-10">
-			<select class="form-control select2" id="counterparty_account_name">
+			<select class="select2" id="counterparty_account_name">
 			{% for account in accounts %}
 				<option name="counterparty_account_name" value="{{ account.id }}">{{ [account.first_name, account.last_name]|join(' ') }}</option>
 			{% endfor %}
@@ -38,16 +40,19 @@
 	<div class="form-group">
 		<label for="transaction_type_code" class="col-sm-2 control-label">Betaalwijze</label>
 		<div class="col-sm-10">
-			<div class="btn-group" data-toggle="buttons" id="transaction_type_code">
-			{% for type in transactionTypes %}
-				{% set active = (loop.index0 == 0) ? 'active' : '' %}
-				{% set checked = (loop.index0 == 0) ? 'checked="checked"' : '' %}
-				
-				<label class="btn btn-default {{ active}}">
-					<input type="radio" name="transaction_type_code" value="{{ type.id }}" {{ checked }}> {{ type.code|title }}
+		
+		{% for type in transactionTypes %}
+			{% set checked = (loop.index0 == 0) ? 'checked="checked"' : '' %}
+			{% set typeIcon = (type.code == "BANK") ? 'credit-card' : (type.code == "CASH") ? 'euro': 'heart-empty' %}
+			
+			<div class="radio radio-success">
+				<label>
+					<input type="radio" name="transaction_type_code" value="{{ type.id }}" {{ checked }}><span class="circle"></span><span class="check"></span>
+					<i class="glyphicon glyphicon-{{ typeIcon }}" data-toggle="tooltip" title="{{ type.code|title }}"></i> {# {{ type.code|title }} #}
 				</label>
-			{% endfor %}
 			</div>
+			
+		{% endfor %}
 		</div>
 	</div>
 	

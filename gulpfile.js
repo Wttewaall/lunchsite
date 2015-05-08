@@ -16,6 +16,11 @@ gulp.copy = function(src, dest) {
 		.pipe(gulp.dest(dest));
 };
 
+/**
+TODO: flag toevoegen om optioneel alleen de minified versies te pakken
+TODO: alle dependencies in een enkele vendors.js/css concatten
+**/
+
 // Dependecies
 gulp.task('deps', function () {
 
@@ -29,13 +34,15 @@ gulp.task('deps', function () {
 
 	var fonts = gulp.src([
 		'bower_components/bootstrap/dist/fonts/**/*',
+		'bower_components/bootstrap-material-design/dist/fonts/**/*',
 		'assets/fonts/**/*'
 	]).pipe(gulp.dest('web/fonts/'));
 
 	var styles = gulp.src([
 		'bower_components/form.validation/dist/css/formValidation.min.css',
 		'bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
-		'bower_components/select2/dist/css/select2.min.css'
+		'bower_components/select2/dist/css/select2.min.css',
+		'bower_components/bootstrap-material-design/dist/css/*.min.*'
 	]).pipe(gulp.dest('web/css/'));
 
 	var thirdpartyScripts = gulp.src([
@@ -44,7 +51,8 @@ gulp.task('deps', function () {
 		'bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
 		'bower_components/moment/min/moment-with-locales.min.js',
 		'bower_components/select2/dist/js/select2.min.js',
-		'bower_components/bootbox/bootbox.js'
+		'bower_components/bootbox/bootbox.js',
+		'bower_components/bootstrap-material-design/dist/js/*.min.*'
 	]).pipe(gulp.dest('web/js/'));
 
 	var bootstrapValidator = gulp.src([
@@ -58,7 +66,7 @@ gulp.task('deps', function () {
 
     return merge(
 		favicon, images, fonts, styles,
-		thirdpartyScripts, bootstrapValidator, scripts
+		thirdpartyScripts, bootstrapValidator
 	);
 });
 

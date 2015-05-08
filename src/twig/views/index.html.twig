@@ -1,33 +1,29 @@
 {% extends "../base.html.twig" %}
 
 {% block header %}
-<div class="container">
-	
-	<div class="page-header">
-		<h1>Lunchsite</h1>
+	<div class="container">
+		<div class="page-header">
+			<h1>Lunchsite</h1>
+		</div>
 	</div>
-	
-	<div class="well">
-		<a href="/transaction.html" class="btn btn-primary">Voeg een transactie toe</a>
-	</div>
-	
-</div>
 {% endblock %}
 
 {% block sections %}
-
-	<div role="tabpanel">
-
-		<!-- Nav tabs -->
-		<ul class="nav nav-tabs" role="tablist">
-			<li role="presentation" class="active"><a href="#overview" aria-controls="overview" role="tab" data-toggle="tab">Betaaloverzicht</a></li>
-			<li role="presentation"><a href="#transactions" aria-controls="transactions" role="tab" data-toggle="tab">Alle transacties</a></li>
-		</ul>
+	
+	<div class="panel panel-default" role="tabpanel">
+		
+		<div class="panel-heading">
+			<!-- Nav tabs -->
+			<ul class="nav nav-pills" role="tablist">
+				<li role="presentation" class="active"><a href="#overview" aria-controls="overview" role="tab" data-toggle="tab">Betaaloverzicht</a></li>
+				<li role="presentation"><a href="#transactions" aria-controls="transactions" role="tab" data-toggle="tab">Alle transacties</a></li>
+			</ul>
+		</div>
 
 		<!-- Tab panes -->
-		<div class="tab-content">
+		<div class="tab-content panel-body">
 			
-			<div role="tabpanel" class="tab-pane active" id="overview">
+			<div role="tabpanel" class="tab-pane fade in active" id="overview">
 				<section class="users-overview">
 					{% set u1  = { id:  7,	name: "Christiaan de Jong",	type: "EMPLOYEE",	amount: 71.00 } %}
 					{% set u2  = { id: 11,	name: "Willem Slaghekke",	type: "EMPLOYEE",	amount: 67.31 } %}
@@ -48,7 +44,7 @@
 				</section>
 			</div>
 			
-			<div role="tabpanel" class="tab-pane" id="transactions">
+			<div role="tabpanel" class="tab-pane fade" id="transactions">
 				<section class="transactions-list">	
 					
 					{% set t1  = {date: "2015-04-20 10:00:06", acc_id: "8",	acc_name: "Sander Groen", acc_type: "EMPLOYEE",	cacc_id: "15",	cacc_name: "AH", cacc_type: "SUPERMARKET",					amount:2922,	status:"AF",	type:"BANK", description:""} %}
@@ -66,8 +62,9 @@
 					{% set t13 = {date: "2015-05-07 12:38:21", acc_id: "16",acc_name: "Bart jr Kuipers", acc_type: "INTERN",	cacc_id: "1",	cacc_name: "Lunch pot", cacc_type: "POT",			amount:2500,	status:"AF",	type:"CASH", description:""} %}
 
 					{% set transactions = [t13, t12, t11, t10, t9, t8, t7, t6, t5, t4, t3, t2, t1] %}
-
+					
 					{% include "../components/table_transactions_list.html.twig" with {transactions: transactions} %}
+					
 				</section>
 			</div>
 			
@@ -75,4 +72,12 @@
 
 	</div>
 
+{% endblock %}
+
+{% block footer %}
+	<footer class="footer">
+		<div class="container text-center">
+			<img id="logo" alt="RECOGNIZE" src="http://recognize.nl/wp-content/uploads/2014/05/recognize_web_logo.png">
+		</div>
+	</footer>
 {% endblock %}
