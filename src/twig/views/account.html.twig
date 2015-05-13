@@ -1,0 +1,13 @@
+{% extends "base.html.twig" %}
+
+{% block sections %}
+	<section class="account">
+		
+		<div class="well bs-component">
+			
+			{% include "components/form_transaction_edit.html.twig" with {account: account} %}
+			
+		</div>
+		
+	</section>
+{% endblock %}

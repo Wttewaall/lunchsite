@@ -1,0 +1,120 @@
+{% set editMode = (mode == 'edit') %}
+
+<form class="form-horizontal" autocomplete="off">
+
+	<legend>Account <small>{{ mode }}</small></legend>
+	
+	{% if (editMode == false) %}
+	<h2>{{ [account.first_name, account.last_name]|join(' ') }}</h2>
+	{% endif %}
+	
+	{% if editMode %}
+	<div class="form-group">
+		<label for="account_first_name" class="col-sm-2 control-label">Voornaam</label>
+		<div class="col-sm-10">
+			<input type="text" class="form-control" id="account_first_name" name="account_first_name" value="{{ account.first_name }}">
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label for="account_last_name" class="col-sm-2 control-label">Achternaam</label>
+		<div class="col-sm-10">
+			<input type="text" class="form-control" id="account_last_name" name="account_last_name" value="{{ account.last_name }}">
+		</div>
+	</div>
+	{% endif %}
+	
+	<div class="form-group">
+		<label for="account_type_code" class="col-sm-2 control-label">Type</label>
+		<div class="col-sm-10">
+		{% if editMode %}
+			<input type="text" class="form-control" id="account_type_code" name="account_type_code" value="{{ account.code }}">
+		{% else %}
+			{{ account.code|title }}
+		{% endif %}
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label for="account_iban" class="col-sm-2 control-label">IBAN</label>
+		<div class="col-sm-10">
+		{% if editMode %}
+			<input type="text" class="form-control" id="account_iban" name="account_iban" value="{{ account.iban }}">
+		{% else %}
+			{{ account.iban }}
+		{% endif %}
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label for="account_participation" class="col-sm-2 control-label">Participatie</label>
+		<div class="col-sm-10">
+		{% if editMode %}
+			<div class="input-group col-sm-2">
+				<input type="text" class="form-control" id="account_participation" name="account_participation" value="{{ account.participation }}">
+				<div class="input-group-addon">%</div>
+			</div>
+		{% else %}
+			{{ account.participation }} %
+		{% endif %}
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label for="account_created_date" class="col-sm-2 control-label">Aangemaakt op</label>
+		<div class="col-sm-10">
+		{% if editMode %}
+			<div class='input-group date col-sm-3' id='account_created_date'>
+				<input type="text" class="form-control" name="account_created_date" value="{{ account.created_date|date('d-m-Y H:i') }}">
+				<span class="input-group-addon">
+					<span class="glyphicon glyphicon-calendar"></span>
+				</span>
+			</div>
+		{% else %}
+			<p>{{ account.created_date|date('d-m-Y H:i') }}</p>
+		{% endif %}
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label for="account_modified_date" class="col-sm-2 control-label">Bijgewerkt op</label>
+		<div class="col-sm-10">
+		{% if editMode %}
+			<div class='input-group date col-sm-3' id='account_modified_date'>
+				<input type="text" class="form-control" name="account_modified_date" value="{{ account.modified_date|date('d-m-Y H:i') }}">
+				<span class="input-group-addon">
+					<span class="glyphicon glyphicon-calendar"></span>
+				</span>
+			</div>
+		{% else %}
+			<p>{{ account.modified_date|date('d-m-Y H:i') }}</p>
+		{% endif %}
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label for="account_deleted_date" class="col-sm-2 control-label">Verwijderd op</label>
+		<div class="col-sm-10">
+		{% if editMode %}
+			<div class='input-group date col-sm-3' id='account_deleted_date'>
+				<input type="text" class="form-control" name="account_deleted_date" value="{{ account.deleted_date|date('d-m-Y H:i') }}">
+				<span class="input-group-addon">
+					<span class="glyphicon glyphicon-calendar"></span>
+				</span>
+			</div>
+		{% else %}
+			<p>{{ account.deleted_date|date('d-m-Y H:i') }}</p>
+		{% endif %}
+		</div>
+	</div>
+	
+	{% if editMode %}
+	<div class="form-group">
+		<div class="col-sm-10 col-sm-offset-2">
+			<button type="button" class="btn btn-default btn-cancel">Annuleren</button>
+			<button type="submit" class="btn btn-primary btn-submit">Verzenden</button>
+		</div>
+	</div>
+	{% endif %}
+	
+</form>

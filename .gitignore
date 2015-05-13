@@ -1,5 +1,10 @@
+/bower_components/
+/node_modules/
+/vendor/
+
+/web/
+composer.phar
 .idea
 .sublime-gulp.cache
-/node_modules/
-/bower_components/
-/web/
+*.sublime-project
+*.sublime-workspace

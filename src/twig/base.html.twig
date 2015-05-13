@@ -3,35 +3,34 @@
 	
 	<head>
 		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		
 		<title>{% block title %}{% endblock %}</title>
-
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width,initial-scale=1"/>
-
-		<link rel="shortcut icon" href="favicon.ico" />
+		
+		<link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
 		
 		{% block style %}{% endblock %}
 
-		<link rel="stylesheet" href="css/lunchsite.css">
-		<link rel="stylesheet" href="css/formValidation.min.css">
-		<link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css">
-		<link rel="stylesheet" href="css/select2.min.css">
-		<link rel="stylesheet" href="css/material-fullpalette.min.css">
-		<link rel="stylesheet" href="css/material.min.css">
-		<link rel="stylesheet" href="css/ripples.min.css">
-		<link rel="stylesheet" href="css/roboto.min.css">
+		<link rel="stylesheet" href="{{ asset('css/lunchsite.css') }}">
+		<link rel="stylesheet" href="{{ asset('css/formValidation.min.css') }}">
+		<link rel="stylesheet" href="{{ asset('css/bootstrap-datetimepicker.min.css') }}">
+		<link rel="stylesheet" href="{{ asset('css/select2.min.css') }}">
+		<link rel="stylesheet" href="{{ asset('css/material-fullpalette.min.css') }}">
+		<link rel="stylesheet" href="{{ asset('css/material.min.css') }}">
+		<link rel="stylesheet" href="{{ asset('css/ripples.min.css') }}">
+		<link rel="stylesheet" href="{{ asset('css/roboto.min.css') }}">
 		
-		<script type="text/javascript" src="js/jquery.min.js"></script>
-		<script type="text/javascript" src="js/formValidation.js"></script>
-		<script type="text/javascript" src="js/bootstrap.min.js"></script>
-		<script type="text/javascript" src="js/moment-with-locales.min.js"></script>
-		<script type="text/javascript" src="js/bootstrap-datetimepicker.min.js"></script>
-		<script type="text/javascript" src="js/select2.min.js"></script>
-		<script type="text/javascript" src="js/bootbox.js"></script>
-		<script type="text/javascript" src="js/lunchsite.js"></script>
-		<script type="text/javascript" src="js/material.min.js"></script>
-		<script type="text/javascript" src="js/ripples.min.js"></script>
+		<script type="text/javascript" src="{{ asset('js/jquery.min.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('js/formValidation.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('js/moment-with-locales.min.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('js/bootstrap-datetimepicker.min.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('js/select2.min.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('js/bootbox.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('js/lunchsite.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('js/material.min.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('js/ripples.min.js') }}"></script>
 		
 		{% block script %}{% endblock %}
 		

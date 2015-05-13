@@ -16,7 +16,7 @@
 			{% set amountStyle = (user.amount > 50) ? 'danger' : (user.amount > 0) ? '' : 'success' %}
 			
 			<tr class="{{ amountStyle }}">
-				<td><a href="#{{ user.id }}"><i class="glyphicon glyphicon-{{ accIcon }}"></i> {{ user.name }}</a></td>
+				<td><a href="/account/{{ user.id }}"><i class="glyphicon glyphicon-{{ accIcon }}"></i> {{ user.name }}</a></td>
 				<td class="prefix-euro">{{ user.amount|number_format(2) }}</td>
 			</tr>
 		{% endfor %}

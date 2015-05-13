@@ -1,0 +1,16 @@
+{
+    "name": "recognize/lunchsite",
+    "description": "A mini site with database for keeping track of the lunch pot",
+    "authors": [
+        {
+            "name": "Bart Wttewaall",
+            "email": "b.wttewaall@recognize.nl"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "jv2222/ezsql": "dev-master",
+        "klein/klein": "2.1.0",
+        "twig/twig": "^2.0@dev"
+    }
+}

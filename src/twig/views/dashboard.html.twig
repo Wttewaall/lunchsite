@@ -1,0 +1,50 @@
+{% extends "base.html.twig" %}
+
+{% block header %}
+	<div class="container">
+		<div class="page-header">
+			<h1>Lunchsite</h1>
+		</div>
+	</div>
+{% endblock %}
+
+{% block sections %}
+	
+	<div class="panel panel-default" role="tabpanel">
+		
+		<div class="panel-heading">
+			<!-- Nav tabs -->
+			<ul class="nav nav-pills" role="tablist">
+				<li role="presentation" class="active"><a href="#overview" aria-controls="overview" role="tab" data-toggle="tab">Betaaloverzicht</a></li>
+				<li role="presentation"><a href="#transactions" aria-controls="transactions" role="tab" data-toggle="tab">Alle transacties</a></li>
+			</ul>
+		</div>
+
+		<!-- Tab panes -->
+		<div class="tab-content panel-body">
+			
+			<div role="tabpanel" class="tab-pane fade in active" id="overview">
+				<section class="users-overview">
+					{% include "components/table_users_overview.html.twig" with {userData: userData} %}
+				</section>
+			</div>
+			
+			<div role="tabpanel" class="tab-pane fade" id="transactions">
+				<section class="transactions-list">	
+					{% include "components/table_transactions_list.html.twig" with {transactions: transactions} %}
+				</section>
+			</div>
+			
+		</div>
+
+	</div>
+
+{% endblock %}
+
+{% block footer %}
+	<footer class="footer">
+		<div class="container text-center">
+			<img id="logo" alt="RECOGNIZE" src="http://recognize.nl/wp-content/uploads/2014/05/recognize_web_logo.png">
+		</div>
+	</footer>
+{% endblock %}

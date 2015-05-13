@@ -1,0 +1,178 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "6b74ceb8dc4b93c5aecfbf972d7064e0",
+    "packages": [
+        {
+            "name": "jv2222/ezsql",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:jv2222/ezSQL.git",
+                "reference": "cc620863b78c65597d72aec581161d9cb81cedd9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jv2222/ezSQL/zipball/cc620863b78c65597d72aec581161d9cb81cedd9",
+                "reference": "cc620863b78c65597d72aec581161d9cb81cedd9",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "cubrid/ez_sql_cubrid.php",
+                    "pdo/ez_sql_pdo.php",
+                    "postgresql/ez_sql_postgresql.php",
+                    "mysql/ez_sql_mysql.php",
+                    "mysqli/ez_sql_mysqli.php",
+                    "sqlsrv/ez_sql_sqlsrv.php",
+                    "oracle8_9/ez_sql_oracle8_9.php",
+                    "sqlite/ez_sql_sqlite.php",
+                    "shared/ez_sql_core.php",
+                    "mssql/ez_sql_mssql.php",
+                    "sybase/ez_sql_sybase.php",
+                    "codeigniter/Ezsql_codeigniter.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL"
+            ],
+            "authors": [
+                {
+                    "name": "Justin Vincent",
+                    "email": "webmaster@justinvincent.com"
+                }
+            ],
+            "description": "PHP class to make interacting with a database ridiculusly easy.",
+            "time": "2014-10-16 08:07:37"
+        },
+        {
+            "name": "klein/klein",
+            "version": "v2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/chriso/klein.php.git",
+                "reference": "5dc073f05adb67ee09680545b4cc7b0590d2559e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/chriso/klein.php/zipball/5dc073f05adb67ee09680545b4cc7b0590d2559e",
+                "reference": "5dc073f05adb67ee09680545b4cc7b0590d2559e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/php-code-coverage": "1.2.x",
+                "phpunit/phpunit": "3.7.x",
+                "squizlabs/php_codesniffer": "1.4.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Klein\\": "src/Klein/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Chris O'Hara",
+                    "email": "cohara87@gmail.com",
+                    "homepage": "http://chris6f.com/",
+                    "role": "Creator/Developer"
+                },
+                {
+                    "name": "Trevor Suarez",
+                    "email": "rican7@gmail.com",
+                    "homepage": "http://about.me/tnsuarez",
+                    "role": "Contributor/Developer"
+                }
+            ],
+            "description": "A lightning fast router for PHP",
+            "homepage": "https://github.com/chriso/klein.php",
+            "keywords": [
+                "boilerplate",
+                "router",
+                "routing",
+                "sinatra"
+            ],
+            "time": "2014-11-07 07:35:23"
+        },
+        {
+            "name": "twig/twig",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/twigphp/Twig.git",
+                "reference": "34e943ae7cca8f9aff666fb87c3e6860e18fc138"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/34e943ae7cca8f9aff666fb87c3e6860e18fc138",
+                "reference": "34e943ae7cca8f9aff666fb87c3e6860e18fc138",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Twig_": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
+                },
+                {
+                    "name": "Armin Ronacher",
+                    "email": "armin.ronacher@active-4.com",
+                    "role": "Project Founder"
+                },
+                {
+                    "name": "Twig Team",
+                    "homepage": "http://twig.sensiolabs.org/contributors",
+                    "role": "Contributors"
+                }
+            ],
+            "description": "Twig, the flexible, fast, and secure template language for PHP",
+            "homepage": "http://twig.sensiolabs.org",
+            "keywords": [
+                "templating"
+            ],
+            "time": "2015-03-17 06:32:29"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "jv2222/ezsql": 20,
+        "twig/twig": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

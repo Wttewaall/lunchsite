@@ -22,8 +22,8 @@
 			
 			<tr>
 				<td>{{ transaction.date|date('d-m-Y') }}</td>
-				<td><a href="#{{ transaction.acc_id }}"><i class="glyphicon glyphicon-{{ accIcon }}"></i> {{ transaction.acc_name }}</a></td>
-				<td><a href="#{{ transaction.cacc_id }}"><i class="glyphicon glyphicon-{{ caccIcon }}"></i> {{ transaction.cacc_name }}</a></td>
+				<td><a href="/account/{{ transaction.acc_id }}"><i class="glyphicon glyphicon-{{ accIcon }}"></i> {{ transaction.acc_name }}</a></td>
+				<td><a href="/account/{{ transaction.cacc_id }}"><i class="glyphicon glyphicon-{{ caccIcon }}"></i> {{ transaction.cacc_name }}</a></td>
 				<td class="prefix-euro">{{ (transaction.amount / 100)|number_format(2) }}</td>
 				<td><i class="glyphicon glyphicon-{{ typeIcon }}" data-toggle="tooltip" title="{{ transaction.type|title }}"></i> {{ transaction.status }}</td>
 				<td>{{ transaction.description }}</td>
@@ -35,10 +35,10 @@
 	
 	<nav class="text-center">
 		<span class="pull-right">
-			<a href="/transaction.html" class="btn btn-primary btn-fab btn-raised mdi-content-add" data-toggle="tooltip" title="Maak een nieuwe transactie aan"></a>
+			<a href="/transaction/create" class="btn btn-primary btn-fab btn-raised mdi-content-add" data-toggle="tooltip" title="Maak een nieuwe transactie aan"></a>
 		</span>
 		
-		{% include "pagination.html.twig" %}
+		{#{% include "pagination.html.twig" %}#}
 		
 	</nav>
 	
