@@ -2,13 +2,41 @@
 
 {% block header %}
 	<div class="container">
-		<div class="page-header">
-			<h1>Lunchsite</h1>
+	
+		<div class="header-panel shadow-z-2">
+			<div class="row">
+				<div class="col-sm-3">
+					<h1>Lunchpot</h1>
+				</div>
+				<div class="col-sm-9">
+					{% include "components/bank_itemrenderer.html.twig" with {account:{first_name:'B.G.', last_name:'Wttewaall', iban:'NL71ABNA0457180749'}} %}
+				</div>
+			</div>
 		</div>
 	</div>
 {% endblock %}
 
 {% block sections %}
+	
+	{#<div data-role="page" id="pageone">
+		<div data-role="panel" id="myPanel">
+		<h2>Panel Header..</h2>
+		<p>Some text in the panel..</p>
+		</div>
+
+		<div data-role="header">
+			<h1>Standard Page Header</h1>
+		</div>
+
+		<div data-role="main" class="ui-content">
+			<p>Click on the button below to open the Panel.</p>
+			<a href="#myPanel" class="ui-btn ui-btn-inline">Open Panel</a>
+		</div>
+
+		<div data-role="footer">
+			<h1>Footer Text</h1>
+		</div>
+	</div>#}
 	
 	<div class="panel panel-default" role="tabpanel">
 		
@@ -32,11 +60,35 @@
 			<div role="tabpanel" class="tab-pane fade" id="transactions">
 				<section class="transactions-list">	
 					{% include "components/table_transactions_list.html.twig" with {transactions: transactions} %}
+					
+					<span class="pull-right">
+						<button type="button" id="createTransactionButton" class="btn btn-primary btn-fab btn-raised mdi-content-add" data-toggle="tooltip" title="Maak een nieuwe transactie aan"></button>
+					</span>
+					
 				</section>
 			</div>
 			
 		</div>
 
+	</div>
+	
+	<div id="transactionModal" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Nieuwe transactie</h4>
+				</div>
+				<div class="modal-body">
+					{% include "components/form_transaction_create.html.twig" with {accounts:accounts, transactionTypes:transactionTypes, showControls:false} %}
+				</div>
+				<div class="modal-footer">
+					<i class="throbber"></i>
+					<button type="button" class="btn btn-default btn-raised" data-dismiss="modal">Annuleren</button>
+					<button type="button" class="btn btn-primary btn-raised">Aanmaken</button>
+				</div>
+			</div>
+		</div>
 	</div>
 
 {% endblock %}
@@ -47,4 +99,16 @@
 			<img id="logo" alt="RECOGNIZE" src="http://recognize.nl/wp-content/uploads/2014/05/recognize_web_logo.png">
 		</div>
 	</footer>
+{% endblock %}
+
+{% block lateScript %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			
+			$("#createTransactionButton").on("click", function() {
+				$('#transactionModal').modal('show');
+			});
+			
+		});
+	</script>
 {% endblock %}

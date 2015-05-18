@@ -1,0 +1,8 @@
+<div class="panel bank-item">
+	
+	{% set bank = match('/(?<=[a-zA-Z]{2}\\d{2})[a-zA-Z]{4}/', account.iban) %}
+	{% set bankIcon = (bank == 'ABNA') ? 'img/abnamro.png' : (bank == 'RABO') ? 'img/rabobank.png' : (bank == 'INGB') ? 'img/ing.png' : '' %}
+	
+	<img src="{{ asset(bankIcon) }}" class="img-responsive">
+	<h3>{{ [account.first_name, account.last_name]|join(' ') }}<br/>{{ account.iban|iban }}</h3>
+</div>

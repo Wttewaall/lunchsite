@@ -12,25 +12,26 @@
 		
 		{% block style %}{% endblock %}
 
-		<link rel="stylesheet" href="{{ asset('css/lunchsite.css') }}">
 		<link rel="stylesheet" href="{{ asset('css/formValidation.min.css') }}">
 		<link rel="stylesheet" href="{{ asset('css/bootstrap-datetimepicker.min.css') }}">
 		<link rel="stylesheet" href="{{ asset('css/select2.min.css') }}">
-		<link rel="stylesheet" href="{{ asset('css/material-fullpalette.min.css') }}">
-		<link rel="stylesheet" href="{{ asset('css/material.min.css') }}">
-		<link rel="stylesheet" href="{{ asset('css/ripples.min.css') }}">
-		<link rel="stylesheet" href="{{ asset('css/roboto.min.css') }}">
+		<link rel="stylesheet" href="{{ asset('css/lunchsite.css') }}">
 		
 		<script type="text/javascript" src="{{ asset('js/jquery.min.js') }}"></script>
-		<script type="text/javascript" src="{{ asset('js/formValidation.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('js/formValidation.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('js/moment-with-locales.min.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('js/bootstrap-datetimepicker.min.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('js/material.min.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('js/ripples.min.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('js/select2.min.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('js/bootbox.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('js/lunchsite.js') }}"></script>
-		<script type="text/javascript" src="{{ asset('js/material.min.js') }}"></script>
-		<script type="text/javascript" src="{{ asset('js/ripples.min.js') }}"></script>
+		
+		<!-- Include jQuery Mobile stylesheets 
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+		<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>-->
 		
 		{% block script %}{% endblock %}
 		

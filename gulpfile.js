@@ -24,8 +24,8 @@ TODO: alle dependencies in een enkele vendors.js/css concatten
 // Dependecies
 gulp.task('deps', function () {
 
-	var favicon = gulp.src([
-		'assets/img/favicon.ico',
+	var assets = gulp.src([
+		'assets/**/*'
 	]).pipe(gulp.dest('web/'));
 
 	var images = gulp.src([
@@ -41,8 +41,7 @@ gulp.task('deps', function () {
 	var styles = gulp.src([
 		'bower_components/form.validation/dist/css/formValidation.min.css',
 		'bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
-		'bower_components/select2/dist/css/select2.min.css',
-		'bower_components/bootstrap-material-design/dist/css/*.min.*'
+		'bower_components/select2/dist/css/select2.min.css'
 	]).pipe(gulp.dest('web/css/'));
 
 	var thirdpartyScripts = gulp.src([
@@ -56,17 +55,28 @@ gulp.task('deps', function () {
 	]).pipe(gulp.dest('web/js/'));
 
 	var bootstrapValidator = gulp.src([
-		'bower_components/form.validation/dist/js/framwork/bootstrap.js',
 		'bower_components/form.validation/dist/js/formValidation.js',
-		'bower_components/form.validation/dist/js/language/nl_NL.js'
+		//'bower_components/form.validation/dist/js/language/nl_NL.js',
+		'bower_components/form.validation/dist/js/framework/bootstrap.min.js',
 	]).pipe(concat('formValidation.js'))
 	.pipe(gulp.dest('web/js/'));
+	
+	var scripts = gulp.src([
+		//'src/js/**/*.js',
+		'src/js/lunchsite.js'
+	]).pipe(concat('lunchsite.js'))
+	.pipe(gulp.dest('web/js/'));
+	
+	var app = gulp.src([
+		'src/php/App.php'
+	]).pipe(gulp.dest('web/'));
 	
 	// ---- merge ----
 
     return merge(
-		favicon, images, fonts, styles,
-		thirdpartyScripts, bootstrapValidator
+		assets, images, fonts, styles,
+		thirdpartyScripts, bootstrapValidator,
+		scripts, app
 	);
 });
 
@@ -97,6 +107,12 @@ gulp.task('twig', function () {
 		.pipe(gulp.dest('web/'));
 });
 
+gulp.task('php', function () {
+	return gulp.src([
+		'src/php/app.php'
+	]).pipe(gulp.dest('web/'));
+});
+
 // Watchers
 gulp.task('watchless', function () {
     gulp.watch('src/less/**/*.less', ['less']);
@@ -110,11 +126,16 @@ gulp.task('watchtwig', function () {
 	gulp.watch('src/twig/**/*.twig', ['twig']);
 });
 
+gulp.task('watchphp', function () {
+	gulp.watch('src/php/**/*.php', ['php']);
+});
+
 gulp.task('watch', function () {
 	gulp.watch('src/less/**/*.less', ['less']);
 	gulp.watch('src/js/**/*.js', ['js']);
-	gulp.watch('src/twig/**/*.twig', ['twig']);
+	//gulp.watch('src/twig/**/*.twig', ['twig']);
+	gulp.watch('src/php/app.php', ['php']);
 });
 
 // Default
-gulp.task('default', ['deps', 'less', 'js', 'twig']);
+gulp.task('default', ['deps', 'less', 'js'/*, 'twig'*/, 'php']);

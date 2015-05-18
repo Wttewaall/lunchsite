@@ -1,0 +1,22 @@
+/* Google Chrome Throbber [CSS] */
+
+.throbber {
+	@size: 26px;
+	@thickness: 5px;
+	
+	display: inline-block;
+ 	width: @size;
+ 	height: @size;
+	padding:0;
+ 	border: @thickness solid;
+ 	border-top-color: transparent;
+ 	border-left-color: transparent;
+ 	border-radius: 50%;
+	color: @primary;
+	background-color: transparent;
+	animation: throbber 0.9s linear infinite;
+ }
+
+@keyframes throbber {
+	100% { transform: rotate(360deg); }
+}

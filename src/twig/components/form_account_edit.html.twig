@@ -41,7 +41,7 @@
 		{% if editMode %}
 			<input type="text" class="form-control" id="account_iban" name="account_iban" value="{{ account.iban }}">
 		{% else %}
-			{{ account.iban }}
+			{{ account.iban|iban }}
 		{% endif %}
 		</div>
 	</div>
