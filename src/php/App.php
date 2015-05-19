@@ -66,6 +66,7 @@
 	// ---- dashboard ----
 	$routing->respond('GET', '/dashboard', function ($request, $response, $service, $app) {
 		$data = array(
+			'lunchAccount'		=> $app->connection->get_row("SELECT account.* FROM accounts account WHERE account.first_name = 'Lunch pot'"),
 			'userData'			=> $app->connection->get_results("SELECT * FROM view_total_for_users"),
 			'transactions'		=> $app->connection->get_results("SELECT * FROM view_all_transactions"),
 			'accounts'			=> $app->connection->get_results("SELECT * FROM accounts"),

@@ -45,7 +45,7 @@ gulp.task('deps', function () {
 	]).pipe(gulp.dest('web/css/'));
 
 	var thirdpartyScripts = gulp.src([
-		'bower_components/jquery/dist/jquery.min.js',
+		'bower_components/jquery/dist/jquery.min.*',
 		'bower_components/bootstrap/dist/js/bootstrap.min.js',
 		'bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
 		'bower_components/moment/min/moment-with-locales.min.js',
