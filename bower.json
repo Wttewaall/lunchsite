@@ -17,7 +17,6 @@
   ],
   "dependencies": {
     "bootstrap": "~3.3.4",
-    "select2": "~4.0.0",
     "jquery": "~2.1.4",
     "form.validation": "*",
     "bootbox": "~4.4.0",
@@ -25,7 +24,6 @@
     "gulp": "~3.8.11",
     "eonasdan-bootstrap-datetimepicker": "~4.7.14",
     "bootstrap-material-design": "~0.3.0",
-    "jquery-mobile": "~1.4.5",
     "dropdown.js": "*"
   }
 }

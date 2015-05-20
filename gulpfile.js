@@ -18,7 +18,6 @@ gulp.copy = function(src, dest) {
 
 /**
 TODO: flag toevoegen om optioneel alleen de minified versies te pakken
-TODO: alle dependencies in een enkele vendors.js/css concatten
 **/
 
 // Dependecies
@@ -41,17 +40,9 @@ gulp.task('deps', function () {
 	var styles = gulp.src([
 		'bower_components/form.validation/dist/css/formValidation.min.css',
 		'bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
-		'bower_components/select2/dist/css/select2.min.css',
 		'bower_components/dropdown.js/jquery.dropdown.css',
 	]).pipe(concat('vendors.css'))
 	.pipe(gulp.dest('web/css/'));
-	
-	/*var bootstrapValidator = gulp.src([
-		'bower_components/form.validation/dist/js/formValidation.js',
-		'bower_components/form.validation/dist/js/framework/bootstrap.min.js',
-		'bower_components/form.validation/dist/js/language/nl_NL.js'
-	]).pipe(concat('formValidation.js'))
-	.pipe(gulp.dest('web/js/'));*/
 	
 	var thirdpartyScripts = gulp.src([
 		'bower_components/jquery/dist/jquery.min.js',
@@ -61,7 +52,6 @@ gulp.task('deps', function () {
 		'bower_components/form.validation/dist/js/framework/bootstrap.min.js',
 		'bower_components/form.validation/dist/js/language/nl_NL.js',
 		'bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
-		'bower_components/select2/dist/js/select2.min.js',
 		'bower_components/bootbox/bootbox.js',
 		'bower_components/bootstrap-material-design/dist/js/*.min.js',
 		'bower_components/dropdown.js/jquery.dropdown.js',
@@ -90,7 +80,6 @@ gulp.task('deps', function () {
 
     return merge(
 		assets, images, fonts, styles,
-		/*bootstrapValidator,*/
 		thirdpartyScripts, cssMaps, jsMaps,
 		scripts, app
 	);
