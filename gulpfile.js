@@ -60,7 +60,7 @@ gulp.task('deps', function () {
 	
 	var cssMaps = gulp.src([
 		'bower_components/bootstrap/dist/css/bootstrap.css.map',
-		'bower_components/bootstrap-material-design/dist/css/*css.map',
+		'bower_components/bootstrap-material-design/dist/css/*min.css.map',
 	]).pipe(gulp.dest('web/css/'));
 	
 	var jsMaps = gulp.src([

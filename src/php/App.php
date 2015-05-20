@@ -112,12 +112,15 @@
 	
 	// ---- dashboard ----
 	$routing->respond('GET', '/dashboard', function ($request, $response, $service, $app) {
+		
 		$data = array(
 		    'lunchAccount'		=> $app->repository->getLunchpotAccount(),
 			'userData'			=> $app->repository->getUserTotals(),
 			'transactions'		=> $app->repository->getTransactions(),
-			'accounts'			=> $app->repository->getAccounts(),
-			'transactionTypes'	=> $app->repository->getTransactionTypes()
+			'accounts'			=> $app->repository->getMutableAccounts(),
+			'transactionTypes'	=> $app->repository->getTransactionTypes(),
+			'totalCash'			=> $app->repository->getTotalCash(),
+			'totalBank'			=> $app->repository->getTotalBank()
 		);
 		
 		return $app->twig->render('dashboard.html.twig', $data);

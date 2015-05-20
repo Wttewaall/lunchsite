@@ -25,14 +25,30 @@ class Repository {
 	
 	// ---- accounts ----
 	
-	public function getAccounts() {
-		$sql = "SELECT * FROM accounts";
+	public function getAccounts($ignoreDeleted = false) {
+		$sql = "SELECT account.*
+			FROM accounts account
+			ORDER BY account.first_name ASC";
+		
+		$sql .= ($ignoreDeleted) ? " WHERE account.deleted_date IS NULL" : "";
+		
 		return $this->connection->get_results($sql);
 	}
 	
+	public function getMutableAccounts() {
+		$accounts = $this->getAccounts();
+		
+		return array_filter($accounts, function($account) {
+			$state = $this->getRecentAccountState($account->id);
+			return (!in_array($state->code, array('Supermarket')));
+		});
+	}
+	
+	public function getNonEmployeeAccounts() {
+	}
+	
 	public function getLunchpotAccount() {
-		$sql = "SELECT
-			account.*
+		$sql = "SELECT account.*
 			FROM accounts account
 			WHERE account.first_name = 'Lunch pot'";
 		
@@ -120,13 +136,61 @@ class Repository {
 	}
 	
 	public function getRecentAccountState($account_id) {
-		$sql = "SELECT *
-			FROM account_state
-			WHERE account.id = $account_id
+		$sql = "SELECT
+				state.*,
+				account_type.code
+			FROM account_state state
+			LEFT JOIN account_type ON account_type.id = state.fk_type_id
+			WHERE state.fk_account_id = $account_id
 			ORDER BY state.modified_date DESC
 			LIMIT 1";
 			
 		return $this->connection->get_row($sql);
+	}
+	
+	public function getTotalCash() {
+		$account_id = 1; // Lunch pot
+		
+		$sql = "SELECT
+			IF(acc.id = $account_id, acc.first_name, cacc.first_name) as name,
+			tt.code,
+			SUM(
+				IF(acc.id = $account_id, trans.amount * -1, trans.amount)
+			) as amount
+		FROM transactions trans
+		LEFT JOIN transaction_type tt ON tt.id = trans.fk_transaction_type
+		LEFT JOIN accounts acc ON acc.id = trans.fk_account_id
+		LEFT JOIN accounts cacc ON cacc.id = trans.fk_counterparty_account_id
+		WHERE (acc.id = $account_id OR cacc.id = $account_id) AND tt.code = 'CASH';";
+		
+		return $this->connection->get_row($sql);
+	}
+	
+	/**
+	 *	TODO fix the system: use the old pot for old depts and substract it from the new pot's total in further calculations
+	 **/
+	public function getTotalBank() {
+		$account_id = 1; // Lunch pot
+		
+		$sql = "SELECT
+			acc.first_name as acc_name,
+			cacc.first_name as cacc_name,
+			IF(acc.id = $account_id, acc.first_name, cacc.first_name) as name,
+			tt.code,
+			SUM(
+				IF(acc.id = $account_id, trans.amount * -1, trans.amount)
+			) as amount
+		FROM transactions trans
+		LEFT JOIN transaction_type tt ON tt.id = trans.fk_transaction_type
+		LEFT JOIN accounts acc ON acc.id = trans.fk_account_id
+		LEFT JOIN accounts cacc ON cacc.id = trans.fk_counterparty_account_id
+		LEFT JOIN account_state cacc_state ON cacc_state.fk_account_id = cacc.id
+		LEFT JOIN account_type cacc_type ON cacc_type.id = cacc_state.fk_type_id
+		WHERE (acc.id = $account_id OR cacc.id = $account_id) AND tt.code = 'BANK' AND cacc_type.code NOT IN ('Employee', 'Intern')";
+		
+		$result = $this->connection->get_row($sql);
+		$result->amount -= 4000; // Bart's donation to the old Pot
+		return $result;
 	}
 	
 	// ---- transactions ----
