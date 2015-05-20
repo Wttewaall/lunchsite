@@ -25,19 +25,23 @@
 	{% endif %}
 	
 	<div class="form-group">
-		<label for="account_account_name" class="col-sm-2 control-label">Rekening naam</label>
-		<div class="col-sm-10">
-			<input type="text" class="form-control" id="account_account_name" name="account_account_name" value="{{ account.account_name }}">
-		</div>
-	</div>
-	
-	<div class="form-group">
 		<label for="account_type_code" class="col-sm-2 control-label">Type</label>
 		<div class="col-sm-10">
 		{% if editMode %}
 			<input type="text" class="form-control" id="account_type_code" name="account_type_code" value="{{ account.code }}">
 		{% else %}
 			{{ account.code|title }}
+		{% endif %}
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label for="account_account_name" class="col-sm-2 control-label">Rekening naam</label>
+		<div class="col-sm-10">
+		{% if editMode %}
+			<input type="text" class="form-control" id="account_account_name" name="account_account_name" value="{{ account.account_name }}">
+		{% else %}
+			{{ account.account_name }}
 		{% endif %}
 		</div>
 	</div>

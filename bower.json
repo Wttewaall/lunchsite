@@ -25,6 +25,7 @@
     "gulp": "~3.8.11",
     "eonasdan-bootstrap-datetimepicker": "~4.7.14",
     "bootstrap-material-design": "~0.3.0",
-    "jquery-mobile": "~1.4.5"
+    "jquery-mobile": "~1.4.5",
+    "dropdown.js": "*"
   }
 }

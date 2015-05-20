@@ -25,57 +25,73 @@ TODO: alle dependencies in een enkele vendors.js/css concatten
 gulp.task('deps', function () {
 
 	var assets = gulp.src([
-		'assets/**/*'
+		'assets/**/*',
 	]).pipe(gulp.dest('web/'));
 
 	var images = gulp.src([
-		'assets/img/**/*'
+		'assets/img/**/*',
 	]).pipe(gulp.dest('web/img/'));
 
 	var fonts = gulp.src([
 		'bower_components/bootstrap/dist/fonts/**/*',
 		'bower_components/bootstrap-material-design/dist/fonts/**/*',
-		'assets/fonts/**/*'
+		'assets/fonts/**/*',
 	]).pipe(gulp.dest('web/fonts/'));
 
 	var styles = gulp.src([
 		'bower_components/form.validation/dist/css/formValidation.min.css',
 		'bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
-		'bower_components/select2/dist/css/select2.min.css'
-	]).pipe(gulp.dest('web/css/'));
-
+		'bower_components/select2/dist/css/select2.min.css',
+		'bower_components/dropdown.js/jquery.dropdown.css',
+	]).pipe(concat('vendors.css'))
+	.pipe(gulp.dest('web/css/'));
+	
+	/*var bootstrapValidator = gulp.src([
+		'bower_components/form.validation/dist/js/formValidation.js',
+		'bower_components/form.validation/dist/js/framework/bootstrap.min.js',
+		'bower_components/form.validation/dist/js/language/nl_NL.js'
+	]).pipe(concat('formValidation.js'))
+	.pipe(gulp.dest('web/js/'));*/
+	
 	var thirdpartyScripts = gulp.src([
-		'bower_components/jquery/dist/jquery.min.*',
+		'bower_components/jquery/dist/jquery.min.js',
 		'bower_components/bootstrap/dist/js/bootstrap.min.js',
-		'bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
 		'bower_components/moment/min/moment-with-locales.min.js',
+		'bower_components/form.validation/dist/js/formValidation.js',
+		'bower_components/form.validation/dist/js/framework/bootstrap.min.js',
+		'bower_components/form.validation/dist/js/language/nl_NL.js',
+		'bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
 		'bower_components/select2/dist/js/select2.min.js',
 		'bower_components/bootbox/bootbox.js',
-		'bower_components/bootstrap-material-design/dist/js/*.min.*'
-	]).pipe(gulp.dest('web/js/'));
-
-	var bootstrapValidator = gulp.src([
-		'bower_components/form.validation/dist/js/formValidation.js',
-		//'bower_components/form.validation/dist/js/language/nl_NL.js',
-		'bower_components/form.validation/dist/js/framework/bootstrap.min.js',
-	]).pipe(concat('formValidation.js'))
+		'bower_components/bootstrap-material-design/dist/js/*.min.js',
+		'bower_components/dropdown.js/jquery.dropdown.js',
+	]).pipe(concat('vendors.js'))
 	.pipe(gulp.dest('web/js/'));
 	
+	var cssMaps = gulp.src([
+		'bower_components/bootstrap/dist/css/bootstrap.css.map',
+		'bower_components/bootstrap-material-design/dist/css/*css.map',
+	]).pipe(gulp.dest('web/css/'));
+	
+	var jsMaps = gulp.src([
+		'bower_components/jquery/dist/*.map',
+	]).pipe(gulp.dest('web/js/'));
+	
 	var scripts = gulp.src([
-		//'src/js/**/*.js',
-		'src/js/lunchsite.js'
+		'src/js/**/*.js',
 	]).pipe(concat('lunchsite.js'))
 	.pipe(gulp.dest('web/js/'));
 	
 	var app = gulp.src([
-		'src/php/App.php'
+		'src/php/App.php',
 	]).pipe(gulp.dest('web/'));
 	
 	// ---- merge ----
 
     return merge(
 		assets, images, fonts, styles,
-		thirdpartyScripts, bootstrapValidator,
+		/*bootstrapValidator,*/
+		thirdpartyScripts, cssMaps, jsMaps,
 		scripts, app
 	);
 });

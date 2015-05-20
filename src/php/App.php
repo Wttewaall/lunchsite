@@ -1,41 +1,88 @@
 <?php
 	
-	require_once __DIR__ . '/../vendor/autoload.php';
-	require_once __DIR__ . '/../src/php/repository.php';
+	$root = realpath(__DIR__.'/../');
+	
+	require_once $root.'/vendor/autoload.php';
+	require_once $root.'/src/php/Repository.php';
+	require_once $root.'/src/php/TwigExtensions.php';
+	
+	use \Klein\Klein;
+	
+	$parameters = array(
+		'root'				=> $root,
+		'db_host'			=> '127.0.0.1',
+		'db_port'			=> '3306',
+		'db_name'			=> 'lunch',
+		'username'			=> 'root',
+		'password'			=> '',
+		'twig_use_cache'	=> true
+	);
 	
 	/**
 	 * TODO: fix twig template paths
-	 * TODO: fix '/' route
-	 * 
+	 * TODO: fix '/' route and .htaccess
+	 *  
 	 * https://github.com/chriso/klein.php
 	 * http://www.phpclasses.org/package/790-PHP-Makes-using-mySQL-ridiculously-easy-great-docs-.html
 	 */
 	
-	$routing = new \Klein\Klein();
+	$routing = new Klein();
 	
 	// ---- services ----
-	$routing->respond(function ($request, $response, $service, $app) {
+	$routing->respond(function ($request, $response, $service, $app) use ($parameters) {
 		
 		// Lazy stored database
-		$app->register('connection', function() {
-			return new ezSQL_pdo('mysql:host=127.0.0.1;port=3306;dbname=lunch', 'root', '');
+		$app->register('connection', function() use ($parameters) {
+			
+			$db_address = join(';', array(
+				'host='.$parameters['db_host'],
+				'port='.$parameters['db_port'],
+				'dbname='.$parameters['db_name']
+			));
+			
+			$db = new ezSQL_pdo('mysql:'.$db_address, $parameters['username'], $parameters['password']);
+			
+			/*
+			// Cache expiry
+			$db->cache_timeout = 1; // in hours
+
+			// Specify a cache dir. Path is taken from calling script
+			$db->cache_dir = 'ezsql_cache';
+
+			// (1. You must create this dir. first!)
+			// (2. Might need to do chmod 775)
+
+			// Global override setting to turn disc caching off
+			// (but not on)
+			$db->use_disk_cache = true;
+
+			// By wrapping up queries you can ensure that the default
+			// is NOT to cache unless specified
+			$db->cache_queries = true;
+			*/
+			
+			return $db;
 		});
 		
-		$app->register('repository', function() {
-			return new Repository();
+		$app->register('repository', function() use (&$app) {
+			return new Repository($app->connection);
 		});
 		
 		// Lazy stored initialized twig engine
-		$app->register('twig', function() {
+		$app->register('twig', function() use ($parameters) {
 			
-			$paths = getFolders(realpath(__DIR__.'/../src/twig'));
+			$useCache = $parameters['twig_use_cache'];
+			$paths = getFolders(realpath($parameters['root'].'/src/twig'));
+			
 			$loader = new Twig_Loader_Filesystem($paths);
 			
 			$twig = new Twig_Environment($loader, array(
-				'cache' => ((false) ? realpath(__DIR__.'/../web/cache/') : false)
+				'cache' => ($useCache ? realpath($parameters['root'].'/web/cache/') : false)
 			));
 			
-			return addTwigExtensions($twig);
+			TwigExtensions::addExtensions($twig);
+			
+			return $twig;
 		});
 	});
 	
@@ -58,29 +105,29 @@
 		}
 	});
 	
-	// ---- test ----
-	$routing->respond('GET', '/?', function ($request, $response, $service, $app) {
-		return $app->twig->render('base.html.twig');
+	// ---- root ----
+	$routing->respond('GET', '/', function ($request, $response, $service, $app) {
+		return 'Lunchsite';
 	});
 	
 	// ---- dashboard ----
 	$routing->respond('GET', '/dashboard', function ($request, $response, $service, $app) {
 		$data = array(
-			'lunchAccount'		=> $app->connection->get_row("SELECT account.* FROM accounts account WHERE account.first_name = 'Lunch pot'"),
-			'userData'			=> $app->connection->get_results("SELECT * FROM view_total_for_users"),
-			'transactions'		=> $app->connection->get_results("SELECT * FROM view_all_transactions"),
-			'accounts'			=> $app->connection->get_results("SELECT * FROM accounts"),
-			'transactionTypes'	=> $app->connection->get_results("SELECT * FROM transaction_type")
+		    'lunchAccount'		=> $app->repository->getLunchpotAccount(),
+			'userData'			=> $app->repository->getUserTotals(),
+			'transactions'		=> $app->repository->getTransactions(),
+			'accounts'			=> $app->repository->getAccounts(),
+			'transactionTypes'	=> $app->repository->getTransactionTypes()
 		);
 		
 		return $app->twig->render('dashboard.html.twig', $data);
 	});
 	
 	// ---- transaction ----
-	$routing->respond('GET', '/transaction/create', function ($request, $response, $service, $app) {
+	$routing->respond('GET', '/transaction/[create:action]', function ($request, $response, $service, $app) {
 		$data = array(
-			'accounts'			=> $app->connection->get_results("SELECT * FROM accounts"),
-			'transactionTypes'	=> $app->connection->get_results("SELECT * FROM transaction_type")
+			'accounts'			=> $app->repository->getAccounts(),
+			'transactionTypes'	=> $app->repository->getTransactionTypes()
 		);
 		
 		return $app->twig->render('transaction.html.twig', $data);
@@ -90,7 +137,7 @@
 	$routing->respond('GET', '/account/[i:id]', function ($request, $response, $service, $app) {
 		
 		$data = array(
-			'account' => $app->connection->get_row($app->repository->getAccountQuery($request->id))
+			'account' => $app->repository->getAccountById($request->id)
 		);
 		return $app->twig->render('account.html.twig', $data);
 	});
@@ -137,39 +184,4 @@
 		return getFullHost($use_forwarded_host) . $_SERVER['REQUEST_URI'];
 	}
 	
-	function addTwigExtensions($twig) {
-		
-		// create our own twig extension to get the full path for an asset
-		$twig->addFunction(new Twig_Function('asset', function($asset) {
-			return getFullHost().'/'.ltrim($asset, '/');
-		}));
-		
-		$twig->addFunction(new Twig_Function('match', function($pattern, $subject) {
-			preg_match($pattern, $subject, $matches);
-			return (count($matches) > 0) ? $matches[0] : '';
-		}));
-		
-		$twig->addFunction(new Twig_Function('matches', function($pattern, $subject) {
-			return (preg_match($pattern, $subject) == 1);
-		}));
-		
-		$twig->addFunction(new Twig_Function('replace', function($pattern, $replacement, $subject) {
-			return preg_replace($pattern, $replacement, $subject);
-		}));
-		
-		// delimit an iban string on each 4th character with a space
-		$twig->addFilter(new Twig_Filter('iban', function($value) {
-			
-			$chars = 4;
-			$parts = array();
-			
-			for ($i = 0; $i < ceil(strlen($value) / $chars); $i++) {
-				$parts[] = substr($value, $i * $chars, $chars);
-			}
-			
-			return join(' ', $parts);
-		}));
-		
-		return $twig;
-	}
 ?>

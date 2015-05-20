@@ -80,13 +80,13 @@
 					<h4 class="modal-title">Nieuwe transactie</h4>
 				</div>
 				<div class="modal-body">
-					{% include "components/form_transaction_create.html.twig" with {accounts:accounts, transactionTypes:transactionTypes, showControls:false} %}
+					{% include "components/form_transaction_create.html.twig" with {accounts:accounts, transactionTypes:transactionTypes, showControls:true} %}
 				</div>
-				<div class="modal-footer">
+				{#<div class="modal-footer">
 					<i class="throbber"></i>
 					<button type="button" class="btn btn-default btn-raised" data-dismiss="modal">Annuleren</button>
 					<button type="button" class="btn btn-primary btn-raised">Aanmaken</button>
-				</div>
+				</div>#}
 			</div>
 		</div>
 	</div>

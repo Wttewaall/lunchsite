@@ -1,13 +1,10 @@
-$(document).ready(function() {
-	setupControls();
-});
 
 function setupControls() {
 	// initialize all tooltip elements
 	$('[data-toggle="tooltip"]').tooltip();
 	
 	// initialize all select2 elements
-	$('.select2').select2();
+	//$('.select2').select2();
 	
 	// initialize all date elements
 	$('.date').datetimepicker({
@@ -18,48 +15,34 @@ function setupControls() {
 		$(this).data('DateTimePicker').show();
 	});
 	
-	// ---- forms ----
-
-	/*ValidatorHelper.init('#transactionForm', {
-		transaction_amount_name: {
-			validators: {
-				numeric: {}
-			}
-		},
-		email: {
-			validators: {
-				emailAddress: {}
-			}
-		},
-		iban: {
-			validators: {
-				iban: {}
-			}
-		}
+	// ---- form handling ----
+	
+	$('body').on('click', 'form .btn-cancel', function(event) {
+		$modal = $(event.currentTarget).parents('.modal');
+		if (!!$modal) $modal.modal('hide');
 	});
+	
+	$('body').on('success.form.fv', '#transactionForm', transactionFormSubmitHandler);
+}
 
-	ValidatorHelper.init('#accountForm', {
-		account_iban: {
-			validators: {
-				iban: {}
-			}
-		}
-	});*/
-
-	$('#transactionForm').on('success.form.bv', function(event) {
-		event.preventDefault();
-		var $form = $(event.currentTarget);
+function transactionFormSubmitHandler(event) {
+	event.preventDefault();
+	var $form = $(event.currentTarget);
+	
+	var data = $form.serialize();
+	
+	postForm('transaction/create', $form, data).done(function (data) {
 		
-		var data = $form.serialize();
+		$modal = $(event.currentTarget).parents('.modal');
+		if (!!$modal) $modal.modal('hide');
 		
-		postForm('transaction/add', $form, data).done(function (data) {
-			bootbox.alert('Het formulier is succesvol verzonden');
-			resetForm($form);
-		});
+		bootbox.alert('Het formulier is succesvol verzonden');
+		resetForm($form);
 	});
 }
 
 function postForm(method, form, data) {
+	console.log('ok');return;
 	
 	var params = '';
 	$.each(data, function(property, value) {
@@ -70,11 +53,10 @@ function postForm(method, form, data) {
 	var url = '/' + method + '?' + params;
 	
 	var $controls = $('input, select, textarea, button', $(form));
-	
+	console.log('posting form...', url);return;
 	return $.ajax({
 		url: url,
-		type: 'GET',
-		dataType: 'json',
+		type: 'POST',
 		beforeSend: function(jqXHR, settings) {
 			$controls.attr('disabled', 'disabled');
 		},
@@ -98,3 +80,7 @@ function resetForm(form) {
 		$form.data('bootstrapValidator').resetForm(true);
 	}
 }
+
+$(document).ready(function() {
+	setupControls();
+});
