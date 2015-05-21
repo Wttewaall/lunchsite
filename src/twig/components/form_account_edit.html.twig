@@ -3,6 +3,7 @@
 <form class="form-horizontal" autocomplete="off">
 
 	<legend>Account <small>{{ mode }}</small></legend>
+	<i class="mdi-action-account-circle"></i>
 	
 	{% if (editMode == false) %}
 	<h2>{{ [account.first_name, account.last_name]|join(' ') }}</h2>

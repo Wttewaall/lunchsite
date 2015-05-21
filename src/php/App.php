@@ -87,31 +87,31 @@
 	});
 	
 	$routing->onHttpError(function ($code, $router) {
+		$app = $router->app();
+		
 		switch ($code) {
-			case 404:
-				$router->response()->body(
-					'Y U so lost?!'
-				);
+			case 403: {
+				$response = $app->twig->render('403-forbidden.html.twig');
+				$router->response()->body($response);
 				break;
-			case 405:
-				$router->response()->body(
-					'You can\'t do that!'
-				);
+			}
+			case 404: {
+				$response = $app->twig->render('404-not-found.html.twig');
+				$router->response()->body($response);
 				break;
-			default:
-				$router->response()->body(
-					'Oh no, a bad error happened that caused a '. $code
-				);
+			}
+			case 405: {
+				$router->response()->json(array('code' => $code, 'status' => 'Method Not Allowed'));
+				break;
+			}
+			default: {
+				$router->response()->body('Oh no, a bad error happened that caused a '. $code);
+			}
 		}
 	});
 	
 	// ---- root ----
 	$routing->respond('GET', '/', function ($request, $response, $service, $app) {
-		return 'Lunchsite';
-	});
-	
-	// ---- dashboard ----
-	$routing->respond('GET', '/dashboard', function ($request, $response, $service, $app) {
 		
 		$data = array(
 		    'lunchAccount'		=> $app->repository->getLunchpotAccount(),
@@ -134,6 +134,10 @@
 		);
 		
 		return $app->twig->render('transaction.html.twig', $data);
+	});
+	
+	$routing->respond('POST', '/transaction/add', function ($request, $response, $service, $app) {
+		return var_dump($request->postParams());
 	});
 	
 	// ---- account ----

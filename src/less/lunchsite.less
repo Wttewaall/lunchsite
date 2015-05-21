@@ -7,16 +7,6 @@
 
 @import "throbber.less";
 
-// overrule all styles with mobile style in sm screen size
-@media (max-width: @screen-sm-max) {
-	@import "tablet.less";
-}
-
-// overrule all styles with mobile style in xs screen size
-@media (max-width: @screen-xs-max) {
-	@import "mobile.less";
-}
-
 .prefix-euro {
 	&:before {
 		content: '€ '
@@ -52,4 +42,14 @@
 
 .btn-primary:not(.btn-link):not(.btn-flat) {
 	color: @darkbg-text;
+}
+
+// overrule all styles with mobile style in sm screen size
+@media (max-width: @screen-sm-max) {
+	@import "tablet.less";
+}
+
+// overrule all styles with mobile style in xs screen size
+@media (max-width: @screen-xs-max) {
+	@import "mobile.less";
 }
