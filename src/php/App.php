@@ -20,7 +20,6 @@
 	
 	/**
 	 * TODO: fix twig template paths
-	 * TODO: fix '/' route and .htaccess
 	 *  
 	 * https://github.com/chriso/klein.php
 	 * http://www.phpclasses.org/package/790-PHP-Makes-using-mySQL-ridiculously-easy-great-docs-.html
