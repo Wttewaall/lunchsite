@@ -1,24 +1,20 @@
 'use strict';
 
+// settings
+var minifyCSS	= false;
+var minifyJS	= false;
+
+// dependencies
 var gulp		= require('gulp');
-var combineCSS	= require('combine-css');
+var path		= require('path');
+var merge		= require('merge-stream');
 var concat		= require('gulp-concat');
+var rename		= require('gulp-rename');
 var jshint		= require('gulp-jshint');
 var less		= require('gulp-less');
-var rename		= require('gulp-rename');
 var twig		= require('gulp-twig');
+var minify		= require('gulp-minify-css');
 var uglify		= require('gulp-uglify');
-var merge		= require('merge-stream');
-var path		= require('path');
-
-gulp.copy = function(src, dest) {
-	return gulp.src(src, {base: "."})
-		.pipe(gulp.dest(dest));
-};
-
-/**
-TODO: flag toevoegen om optioneel alleen de minified versies te pakken
-**/
 
 // Dependecies
 gulp.task('deps', function () {
@@ -37,14 +33,20 @@ gulp.task('deps', function () {
 		'assets/fonts/**/*',
 	]).pipe(gulp.dest('web/fonts/'));
 
-	var styles = gulp.src([
+	var vendorsCSS = gulp.src([
 		'bower_components/form.validation/dist/css/formValidation.min.css',
 		'bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
 		'bower_components/dropdown.js/jquery.dropdown.css',
 	]).pipe(concat('vendors.css'))
 	.pipe(gulp.dest('web/css/'));
 	
-	var thirdpartyScripts = gulp.src([
+	if (minifyCSS) {
+		vendorsCSS = vendorsCSS.pipe(minify())
+		.pipe(rename({ extname: '.min.css' }))
+		.pipe(gulp.dest('web/css/'));
+	}
+	
+	var vendorsJS = gulp.src([
 		'bower_components/jquery/dist/jquery.min.js',
 		'bower_components/bootstrap/dist/js/bootstrap.min.js',
 		'bower_components/moment/min/moment-with-locales.min.js',
@@ -57,6 +59,12 @@ gulp.task('deps', function () {
 		'bower_components/dropdown.js/jquery.dropdown.js',
 	]).pipe(concat('vendors.js'))
 	.pipe(gulp.dest('web/js/'));
+	
+	if (minifyJS) {
+		vendorsJS = vendorsJS.pipe(uglify())
+		.pipe(rename({ extname: '.min.js' }))
+		.pipe(gulp.dest('web/js/'));
+	}
 	
 	var cssMaps = gulp.src([
 		'bower_components/bootstrap/dist/css/bootstrap.css.map',
@@ -79,25 +87,42 @@ gulp.task('deps', function () {
 	// ---- merge ----
 
     return merge(
-		assets, images, fonts, styles,
-		thirdpartyScripts, cssMaps, jsMaps,
+		assets, images, fonts,
+		vendorsCSS, vendorsJS,
+		cssMaps, jsMaps,
 		scripts, index
 	);
 });
 
 // Less
 gulp.task('less', function () {
-	return gulp.src('src/less/lunchsite.less')
+	var lessTask = gulp.src('src/less/lunchsite.less')
 		.pipe(less())
 		.pipe(gulp.dest('web/css/'));
+		
+	if (minifyCSS) {
+		lessTask = lessTask.pipe(minify())
+		.pipe(rename({ extname: '.min.css' }))
+		.pipe(gulp.dest('web/css/'));
+	}
+	
+	return lessTask;
 });
 
 // JS
 gulp.task('js', function () {
-	return gulp.src([
+	var jsTask = gulp.src([
 		'src/js/**/*.js'
 	]).pipe(concat('lunchsite.js'))
 	.pipe(gulp.dest('web/js/'));
+	
+	if (minifyJS) {
+		jsTask = jsTask.pipe(uglify())
+		.pipe(rename({ extname: '.min.js' }))
+		.pipe(gulp.dest('web/js/'));
+	}
+	
+	return jsTask;
 });
 
 // Twig
