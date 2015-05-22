@@ -1,12 +1,18 @@
 <?php
 
+namespace Lunchpot;
+
+use \Twig_Environment;
+use \Twig_Function;
+use \Twig_Filter;
+
 class TwigExtensions {
 	
 	public static function addExtensions(Twig_Environment $twig) {
 		
 		// create our own twig extension to get the full path for an asset
 		$twig->addFunction(new Twig_Function('asset', function($asset) {
-			return getFullHost().'/'.ltrim($asset, '/');
+			return TwigExtensions::getFullHost().'/'.ltrim($asset, '/');
 		}));
 		
 		$twig->addFunction(new Twig_Function('match', function($pattern, $subject) {
@@ -36,6 +42,22 @@ class TwigExtensions {
 		}));
 		
 		return $twig;
+	}
+	
+	public static function getFullHost($use_forwarded_host = false) {
+		$s = &$_SERVER;
+		$ssl = (!empty($s['HTTPS']) && $s['HTTPS'] == 'on') ? true:false;
+		$sp = strtolower($s['SERVER_PROTOCOL']);
+		$protocol = substr($sp, 0, strpos($sp, '/')) . (($ssl) ? 's' : '');
+		$port = $s['SERVER_PORT'];
+		$port = ((!$ssl && $port == '80') || ($ssl && $port == '443')) ? '' : ':'.$port;
+		$host = ($use_forwarded_host && isset($s['HTTP_X_FORWARDED_HOST'])) ? $s['HTTP_X_FORWARDED_HOST'] : (isset($s['HTTP_HOST']) ? $s['HTTP_HOST'] : null);
+		$host = isset($host) ? $host : $s['SERVER_NAME'] . $port;
+		return $protocol . '://' . $host;
+	}
+	
+	public static function getFullURL($use_forwarded_host = false) {
+		return $this->getFullHost($use_forwarded_host) . $_SERVER['REQUEST_URI'];
 	}
 	
 }

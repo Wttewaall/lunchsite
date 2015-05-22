@@ -24,6 +24,7 @@
     "gulp": "~3.8.11",
     "eonasdan-bootstrap-datetimepicker": "~4.7.14",
     "bootstrap-material-design": "~0.3.0",
-    "dropdown.js": "*"
+    "dropdown.js": "*",
+    "swiper": "~3.0.7"
   }
 }

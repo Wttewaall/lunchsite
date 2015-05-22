@@ -72,8 +72,8 @@ gulp.task('deps', function () {
 	]).pipe(concat('lunchsite.js'))
 	.pipe(gulp.dest('web/js/'));
 	
-	var app = gulp.src([
-		'src/php/App.php',
+	var index = gulp.src([
+		'src/php/index.php',
 	]).pipe(gulp.dest('web/'));
 	
 	// ---- merge ----
@@ -81,7 +81,7 @@ gulp.task('deps', function () {
     return merge(
 		assets, images, fonts, styles,
 		thirdpartyScripts, cssMaps, jsMaps,
-		scripts, app
+		scripts, index
 	);
 });
 
@@ -112,12 +112,6 @@ gulp.task('twig', function () {
 		.pipe(gulp.dest('web/'));
 });
 
-gulp.task('php', function () {
-	return gulp.src([
-		'src/php/app.php'
-	]).pipe(gulp.dest('web/'));
-});
-
 // Watchers
 gulp.task('watchless', function () {
     gulp.watch('src/less/**/*.less', ['less']);
@@ -131,16 +125,11 @@ gulp.task('watchtwig', function () {
 	gulp.watch('src/twig/**/*.twig', ['twig']);
 });
 
-gulp.task('watchphp', function () {
-	gulp.watch('src/php/**/*.php', ['php']);
-});
-
 gulp.task('watch', function () {
 	gulp.watch('src/less/**/*.less', ['less']);
 	gulp.watch('src/js/**/*.js', ['js']);
 	//gulp.watch('src/twig/**/*.twig', ['twig']);
-	gulp.watch('src/php/app.php', ['php']);
 });
 
 // Default
-gulp.task('default', ['deps', 'less', 'js'/*, 'twig'*/, 'php']);
+gulp.task('default', ['deps', 'less', 'js']);
