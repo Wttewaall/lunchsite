@@ -1,7 +1,12 @@
 <?php
 	
+	#!/bin/env php
+	
 	/**
 	 * -- TODO --
+	 *	. Autoload classes instead of declaring them manually
+	 *		@see http://www.sitepoint.com/autoloading-and-the-psr-0-standard/
+	 *		@see http://php-autoloader.malkusch.de/en/
 	 *	. Clean up Routing: routes with multiple CRUD actions should go to their own Controller
 	 *	. POST a Transaction form
 	 *	. POST an Account form
