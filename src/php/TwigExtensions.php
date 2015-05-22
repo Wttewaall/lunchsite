@@ -6,6 +6,11 @@ use \Twig_Environment;
 use \Twig_Function;
 use \Twig_Filter;
 
+/**
+ * Class TwigExtensions
+ * @package Lunchpot
+ * @author Bart Wttewaall <b.wttewaall@recognize.nl>
+ */
 class TwigExtensions {
 	
 	public static function addExtensions(Twig_Environment $twig) {

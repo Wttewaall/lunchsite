@@ -3,6 +3,8 @@
 // settings
 var minifyCSS	= false;
 var minifyJS	= false;
+var addCSSMaps	= false;
+var addJSMaps	= false;
 
 // dependencies
 var gulp		= require('gulp');
@@ -12,6 +14,7 @@ var concat		= require('gulp-concat');
 var rename		= require('gulp-rename');
 var jshint		= require('gulp-jshint');
 var less		= require('gulp-less');
+var sass		= require('gulp-sass');
 var twig		= require('gulp-twig');
 var minify		= require('gulp-minify-css');
 var uglify		= require('gulp-uglify');
@@ -34,8 +37,8 @@ gulp.task('deps', function () {
 	]).pipe(gulp.dest('web/fonts/'));
 
 	var vendorsCSS = gulp.src([
-		'bower_components/form.validation/dist/css/formValidation.min.css',
-		'bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
+		'bower_components/form.validation/dist/css/formValidation.css',
+		'bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css',
 		'bower_components/dropdown.js/jquery.dropdown.css',
 	]).pipe(concat('vendors.css'))
 	.pipe(gulp.dest('web/css/'));
@@ -48,14 +51,15 @@ gulp.task('deps', function () {
 	
 	var vendorsJS = gulp.src([
 		'bower_components/jquery/dist/jquery.min.js',
-		'bower_components/bootstrap/dist/js/bootstrap.min.js',
-		'bower_components/moment/min/moment-with-locales.min.js',
+		'bower_components/bootstrap/dist/js/bootstrap.js',
+		'bower_components/moment/min/moment-with-locales.js',
 		'bower_components/form.validation/dist/js/formValidation.js',
-		'bower_components/form.validation/dist/js/framework/bootstrap.min.js',
+		'bower_components/form.validation/dist/js/framework/bootstrap.js',
 		'bower_components/form.validation/dist/js/language/nl_NL.js',
-		'bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
+		'bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.js',
 		'bower_components/bootbox/bootbox.js',
-		'bower_components/bootstrap-material-design/dist/js/*.min.js',
+		'bower_components/bootstrap-material-design/dist/js/material.js',
+		'bower_components/bootstrap-material-design/dist/js/ripples.js',
 		'bower_components/dropdown.js/jquery.dropdown.js',
 	]).pipe(concat('vendors.js'))
 	.pipe(gulp.dest('web/js/'));
@@ -66,14 +70,14 @@ gulp.task('deps', function () {
 		.pipe(gulp.dest('web/js/'));
 	}
 	
-	var cssMaps = gulp.src([
-		'bower_components/bootstrap/dist/css/bootstrap.css.map',
-		'bower_components/bootstrap-material-design/dist/css/*min.css.map',
-	]).pipe(gulp.dest('web/css/'));
+	var cssMaps = gulp.src((addCSSMaps) ? [
+		'bower_components/bootstrap/dist/css/*.map',
+		'bower_components/bootstrap-material-design/dist/css/*.map',
+	] : []).pipe(gulp.dest('web/css/'));
 	
-	var jsMaps = gulp.src([
+	var jsMaps = gulp.src((addJSMaps) ? [
 		'bower_components/jquery/dist/*.map',
-	]).pipe(gulp.dest('web/js/'));
+	] : []).pipe(gulp.dest('web/js/'));
 	
 	var scripts = gulp.src([
 		'src/js/**/*.js',
@@ -128,13 +132,10 @@ gulp.task('js', function () {
 // Twig
 gulp.task('twig', function () {
 	return gulp.src([
-			'src/twig/views/*.html.twig'
-		])
-		.pipe(twig())
-		.pipe(rename(function (path) {
-			path.extname = "" /* removes the .twig extension */
-		}))
-		.pipe(gulp.dest('web/'));
+		'src/twig/templates/*.html.twig'
+	]).pipe(twig())
+	.pipe(rename({ extname: '' }))
+	.pipe(gulp.dest('web/'));
 });
 
 // Watchers

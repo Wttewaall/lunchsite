@@ -4,9 +4,16 @@ namespace Lunchpot;
 
 use \ezSQLcore;
 
+/**
+ * Class Repository
+ * @package Lunchpot
+ * @author Bart Wttewaall <b.wttewaall@recognize.nl>
+ */
 class Repository {
 	
-	/** @var ezSQLcore $connection **/
+	/**
+	 * @var \ezSQLcore $connection
+	 */
 	protected $connection;
 	
 	function __construct(ezSQLcore $connection) {

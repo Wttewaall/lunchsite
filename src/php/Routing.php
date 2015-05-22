@@ -7,9 +7,21 @@ use \Klein\Klein;
 use \Twig_Loader_Filesystem;
 use \Twig_Environment;
 
+/**
+ * Class Routing
+ * @package Lunchpot
+ * @author Bart Wttewaall <b.wttewaall@recognize.nl>
+ */
 class Routing {
 	
+	/**
+	 * @var \Klein\Klein $routing
+	 */
 	protected $routing;
+	
+	/**
+	 * @var array $parameters
+	 */
 	protected $parameters;
 	
 	public function __construct(array $parameters) {
@@ -57,7 +69,7 @@ class Routing {
 				return $db;
 			});
 			
-			$app->register('repository', function() use (&$app) {
+			$app->register('repository', function() use ($app) {
 				return new Repository($app->connection);
 			});
 			
