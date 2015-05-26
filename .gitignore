@@ -1,8 +1,8 @@
-/bower_components/
-/node_modules/
-/vendor/
-
-/web/
+/bower_components
+/node_modules
+/vendor
+/web/*
+!/web/.gitkeep
 composer.phar
 .idea
 .sublime-gulp.cache
