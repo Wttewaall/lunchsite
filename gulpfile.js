@@ -9,6 +9,7 @@ var addJSMaps	= false;
 // dependencies
 var gulp		= require('gulp');
 var path		= require('path');
+var del			= require('del');
 var merge		= require('merge-stream');
 var concat		= require('gulp-concat');
 var rename		= require('gulp-rename');
@@ -18,6 +19,7 @@ var sass		= require('gulp-sass');
 var twig		= require('gulp-twig');
 var minify		= require('gulp-minify-css');
 var uglify		= require('gulp-uglify');
+var uncss		= require('gulp-uncss');
 
 // Dependecies
 gulp.task('deps', function () {
@@ -56,7 +58,7 @@ gulp.task('deps', function () {
 		'bower_components/form.validation/dist/js/formValidation.js',
 		'bower_components/form.validation/dist/js/framework/bootstrap.js',
 		'bower_components/form.validation/dist/js/language/nl_NL.js',
-		'bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.js',
+		'bower_components/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js',
 		'bower_components/bootbox/bootbox.js',
 		'bower_components/bootstrap-material-design/dist/js/material.js',
 		'bower_components/bootstrap-material-design/dist/js/ripples.js',
@@ -90,7 +92,7 @@ gulp.task('deps', function () {
 	
 	// ---- merge ----
 
-    return merge(
+	return merge(
 		assets, images, fonts,
 		vendorsCSS, vendorsJS,
 		cssMaps, jsMaps,
@@ -140,11 +142,11 @@ gulp.task('twig', function () {
 
 // Watchers
 gulp.task('watchless', function () {
-    gulp.watch('src/less/**/*.less', ['less']);
+	gulp.watch('src/less/**/*.less', ['less']);
 });
 
-gulp.task('watchless', function () {
-    gulp.watch('src/js/**/*.js', ['js']);
+gulp.task('watchjs', function () {
+	gulp.watch('src/js/**/*.js', ['js']);
 });
 
 gulp.task('watchtwig', function () {
@@ -157,5 +159,50 @@ gulp.task('watch', function () {
 	//gulp.watch('src/twig/**/*.twig', ['twig']);
 });
 
+gulp.task('uncss:vendors', function() {
+	return gulp.src('web/css/vendors.css')
+		.pipe(uncss({
+			html: ['http://lunchsite.localhost']
+		}))
+		.pipe(rename({ extname: '.un.css' }))
+		.pipe(gulp.dest('web/css'));
+});
+
+// also see: https://www.npmjs.com/package/gulp-closure-compiler
+gulp.task('uncss:style', function() {
+	return gulp.src('web/css/lunchsite.css')
+		.pipe(uncss({
+			html: ['http://lunchsite.localhost']
+		}))
+		.pipe(rename({ extname: '.un.css' }))
+		.pipe(gulp.dest('web/css'));
+});
+
+gulp.task('clear', function() {
+	del(['web/*', 'web/.htaccess']);
+});
+
+gulp.task('minify:all', function() {
+	
+	// remove old minified files
+	del([
+		'web/css/*.min.css',
+		'web/js/*.min.js'
+	]);
+	
+	var minCSS = gulp.src('web/css/*.css')
+		.pipe(minify())
+		.pipe(rename({ extname: '.min.css' }))
+		.pipe(gulp.dest('web/css/'));
+	
+	var minJS = gulp.src('web/js/*.js')
+		.pipe(uglify())
+		.pipe(rename({ extname: '.min.js' }))
+		.pipe(gulp.dest('web/js/'));
+		
+	return merge(minCSS, minJS);
+});
+
 // Default
 gulp.task('default', ['deps', 'less', 'js']);
+gulp.task('production', ['deps', 'less', 'js', 'minify:all']);
