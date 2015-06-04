@@ -95,6 +95,11 @@ class Routing {
 			$app = $router->app();
 			
 			switch ($code) {
+				case 400: {
+					$response = $app->twig->render('400-bad-request.html.twig');
+					$router->response()->body($response);
+					break;
+				}
 				case 403: {
 					$response = $app->twig->render('403-forbidden.html.twig');
 					$router->response()->body($response);
