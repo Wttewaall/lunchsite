@@ -37,9 +37,10 @@ class Repository {
 				ROUND(
 					(
 						# Get the sum of all rounds
-						(	SELECT SUM(rounds.amount)
-							FROM monthly_rounds rounds
-						)
+						(	
+						 	SELECT SUM(rounds.amount)
+						 	FROM monthly_rounds rounds
+						 )
 						
 						* # Multiply by the participation percentage
 						IFNULL((
@@ -268,9 +269,6 @@ class Repository {
 		return $this->connection->get_row($sql);
 	}
 	
-	/**
-	 *	TODO fix the system: use the old pot for old depts and substract it from the new pot's total in further calculations
-	 **/
 	public function getTotalBank() {
 		$account_id = 1; // Lunch pot
 		
@@ -290,9 +288,7 @@ class Repository {
 		LEFT JOIN account_type cacc_type ON cacc_type.id = cacc_state.fk_type_id
 		WHERE (acc.id = $account_id OR cacc.id = $account_id) AND tt.code = 'BANK' AND cacc_type.code NOT IN ('Employee', 'Intern')";
 		
-		$result = $this->connection->get_row($sql);
-		$result->amount -= 4000; // Bart's donation to the old Pot
-		return $result;
+		return $this->connection->get_row($sql);
 	}
 	
 	// ---- transactions ----
