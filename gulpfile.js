@@ -15,8 +15,10 @@ var concat		= require('gulp-concat');
 var rename		= require('gulp-rename');
 var jshint		= require('gulp-jshint');
 var less		= require('gulp-less');
-var sass		= require('gulp-sass');
+//var sass		= require('gulp-sass');
 var twig		= require('gulp-twig');
+var sourcemaps	= require('gulp-sourcemaps');
+//var autoprefixer	= require('gulp-autoprefixer');
 var minify		= require('gulp-minify-css');
 var uglify		= require('gulp-uglify');
 var uncss		= require('gulp-uncss');
@@ -62,8 +64,9 @@ gulp.task('deps', function () {
 		'bower_components/bootbox/bootbox.js',
 		'bower_components/bootstrap-material-design/dist/js/material.js',
 		'bower_components/bootstrap-material-design/dist/js/ripples.js',
-		'bower_components/dropdown.js/jquery.dropdown.js',
-	]).pipe(concat('vendors.js'))
+		'bower_components/dropdown.js/jquery.dropdown.js'
+	])
+	.pipe(concat('vendors.js'))
 	.pipe(gulp.dest('web/js/'));
 	
 	if (minifyJS) {
@@ -104,6 +107,9 @@ gulp.task('deps', function () {
 gulp.task('less', function () {
 	var lessTask = gulp.src('src/less/lunchsite.less')
 		.pipe(less())
+		.pipe(sourcemaps.init())
+		//.pipe(autoprefixer())
+		.pipe(sourcemaps.write('.'))
 		.pipe(gulp.dest('web/css/'));
 		
 	if (minifyCSS) {
@@ -119,7 +125,10 @@ gulp.task('less', function () {
 gulp.task('js', function () {
 	var jsTask = gulp.src([
 		'src/js/**/*.js'
-	]).pipe(concat('lunchsite.js'))
+	])
+	.pipe(sourcemaps.init())
+	.pipe(concat('lunchsite.js'))
+	.pipe(sourcemaps.write('.'))
 	.pipe(gulp.dest('web/js/'));
 	
 	if (minifyJS) {
@@ -141,15 +150,15 @@ gulp.task('twig', function () {
 });
 
 // Watchers
-gulp.task('watchless', function () {
+gulp.task('watch:less', function () {
 	gulp.watch('src/less/**/*.less', ['less']);
 });
 
-gulp.task('watchjs', function () {
+gulp.task('watch:js', function () {
 	gulp.watch('src/js/**/*.js', ['js']);
 });
 
-gulp.task('watchtwig', function () {
+gulp.task('watch:twig', function () {
 	gulp.watch('src/twig/**/*.twig', ['twig']);
 });
 
@@ -179,7 +188,7 @@ gulp.task('uncss:style', function() {
 });
 
 gulp.task('clear', function() {
-	del(['web/*', 'web/.htaccess']);
+	del(['web/.htaccess', 'web/*']);
 });
 
 gulp.task('minify:all', function() {
