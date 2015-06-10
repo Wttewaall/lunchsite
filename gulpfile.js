@@ -18,7 +18,7 @@ var less		= require('gulp-less');
 //var sass		= require('gulp-sass');
 var twig		= require('gulp-twig');
 var sourcemaps	= require('gulp-sourcemaps');
-//var autoprefixer	= require('gulp-autoprefixer');
+var autoprefixer	= require('gulp-autoprefixer');
 var minify		= require('gulp-minify-css');
 var uglify		= require('gulp-uglify');
 var uncss		= require('gulp-uncss');
@@ -108,7 +108,7 @@ gulp.task('less', function () {
 	var lessTask = gulp.src('src/less/lunchsite.less')
 		.pipe(less())
 		.pipe(sourcemaps.init())
-		//.pipe(autoprefixer())
+		.pipe(autoprefixer())
 		.pipe(sourcemaps.write('.'))
 		.pipe(gulp.dest('web/css/'));
 		
@@ -178,7 +178,7 @@ gulp.task('uncss:vendors', function() {
 });
 
 // also see: https://www.npmjs.com/package/gulp-closure-compiler
-gulp.task('uncss:style', function() {
+gulp.task('uncss', function() {
 	return gulp.src('web/css/lunchsite.css')
 		.pipe(uncss({
 			html: ['http://lunchsite.localhost']
@@ -213,5 +213,5 @@ gulp.task('minify:all', function() {
 });
 
 // Default
-gulp.task('default', ['deps', 'less', 'js']);
+gulp.task('default', ['less', 'js']);
 gulp.task('production', ['deps', 'less', 'js', 'minify:all']);
