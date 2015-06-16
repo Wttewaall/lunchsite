@@ -11,6 +11,7 @@
     "require": {
         "jv2222/ezsql": "dev-master",
         "klein/klein": "2.1.0",
-        "twig/twig": "^2.0@dev"
+        "twig/twig": "^2.0@dev",
+        "wixel/gump": "dev-master"
     }
 }

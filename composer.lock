@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6b74ceb8dc4b93c5aecfbf972d7064e0",
+    "hash": "a9dae7c55cef83de2f4f8a6962665a13",
     "packages": [
         {
             "name": "jv2222/ezsql",
@@ -116,7 +116,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/34e943ae7cca8f9aff666fb87c3e6860e18fc138",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/fe67c5ba3a2418f671307b17adfd8914ffc04b0b",
                 "reference": "34e943ae7cca8f9aff666fb87c3e6860e18fc138",
                 "shasum": ""
             },
@@ -162,6 +162,64 @@
                 "templating"
             ],
             "time": "2015-03-17 06:32:29"
+        },
+        {
+            "name": "wixel/gump",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Wixel/GUMP.git",
+                "reference": "bed693f3e371ec498a8254cecc7adc20cdf471a1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Wixel/GUMP/zipball/bed693f3e371ec498a8254cecc7adc20cdf471a1",
+                "reference": "bed693f3e371ec498a8254cecc7adc20cdf471a1",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "gump.class.php"
+                ]
+            },
+            "notification-url": "http://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Colleen Emryss",
+                    "homepage": "http://skitter.tv"
+                },
+                {
+                    "name": "Mark Slingsby",
+                    "homepage": "http://www.rsaweb.co.za"
+                },
+                {
+                    "name": "Roy de Kleijn",
+                    "homepage": "http://roydekleijn.com"
+                },
+                {
+                    "name": "Christian Klisch",
+                    "homepage": "http://www.christian-klisch.de/"
+                },
+                {
+                    "name": "Inge Brattaas",
+                    "homepage": "http://res.no/"
+                },
+                {
+                    "name": "Sean Nieuwoudt",
+                    "homepage": "http://wixelhq.com"
+                },
+                {
+                    "name": "Rob Crowe",
+                    "homepage": "http://vivalacrowe.com"
+                }
+            ],
+            "description": "A fast, extensible & stand-alone PHP input validation class that allows you to validate any data",
+            "homepage": "http://wixelhq.com/",
+            "time": "2015-06-08 07:05:33"
         }
     ],
     "packages-dev": [],
@@ -169,7 +227,8 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "jv2222/ezsql": 20,
-        "twig/twig": 20
+        "twig/twig": 20,
+        "wixel/gump": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

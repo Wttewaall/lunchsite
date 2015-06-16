@@ -3,6 +3,7 @@
 namespace Lunchpot;
 
 use \ezSQL_pdo;
+use \GUMP;
 use \Klein\Klein;
 use \Twig_Loader_Filesystem;
 use \Twig_Environment;
@@ -138,6 +139,7 @@ class Routing {
 		
 		// ---- transaction ----
 		$this->routing->respond('GET', '/transaction/[create:action]', function ($request, $response, $service, $app) {
+			
 			$data = array(
 				'accounts'			=> $app->repository->getAccounts(),
 				'transactionTypes'	=> $app->repository->getTransactionTypes()
@@ -147,6 +149,14 @@ class Routing {
 		});
 		
 		$this->routing->respond('POST', '/transaction/add', function ($request, $response, $service, $app) {
+			
+			$is_valid = GUMP::is_valid($request->postParams(), array(
+				'username' => 'required|alpha_numeric',
+				'password' => 'required|max_len,100|min_len,6'
+			));
+			
+			if (!$is_valid) throw new \Exception('invalid input: '.print_r($is_valid));
+			
 			return var_dump($request->postParams());
 		});
 		
