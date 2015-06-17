@@ -12,8 +12,18 @@
  	border-top-color: transparent;
  	border-left-color: transparent;
  	border-radius: 50%;
-	color: @primary;
+	color: @text-color;
 	background-color: transparent;
+	
+	&.throbber-inherit { color: inherit; }
+	&.throbber-primary { color: @primary; }
+	
+	&.throbber-sm {
+		width: 20px;
+ 		height: 20px;
+ 		border-size: 4px;
+	}
+	
 	.animation(throbber-keys 0.9s linear infinite);
 }
 

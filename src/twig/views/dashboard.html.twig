@@ -1,12 +1,13 @@
 {% extends "base.html.twig" %}
 
+{% block title %}{{ app.title }}{% endblock %}
 {% block header %}
 	<div class="container">
 	
 		<div class="header-panel shadow-z-2">
 			<div class="row">
 				<div class="col-sm-3">
-					<h1>Lunchpot</h1>
+					<h1><i class="mdi-maps-local-restaurant lunchpot-logo"></i> Lunchpot</h1>
 					<h4 class="prefix-euro">{{ (totalBank.amount / 100)|number_format(2) }} in BANK</h4>
 					<h4 class="prefix-euro">{{ (totalCash.amount / 100)|number_format(2) }} in CASH</h4>
 				</div>
@@ -45,8 +46,15 @@
 		<div class="panel-heading">
 			<!-- Nav tabs -->
 			<ul class="nav nav-pills" role="tablist">
-				<li role="presentation" class="active"><a href="#overview" aria-controls="overview" role="tab" data-toggle="tab">Betaaloverzicht</a></li>
-				<li role="presentation"><a href="#transactions" aria-controls="transactions" role="tab" data-toggle="tab">Alle transacties</a></li>
+				<li role="presentation" class="active">
+					<a href="#overview" aria-controls="overview" role="tab" data-toggle="tab">Betaaloverzicht</a>
+				</li>
+				<li role="presentation">
+					<a href="#transactions" aria-controls="transactions" role="tab" data-toggle="tab">Alle transacties</a>
+				</li>
+				<li role="presentation">
+					<a href="#accounts" aria-controls="accounts" role="tab" data-toggle="tab">Accounts</a>
+				</li>
 			</ul>
 		</div>
 
@@ -60,19 +68,69 @@
 			</div>
 			
 			<div role="tabpanel" class="tab-pane fade" id="transactions">
-				<section class="transactions-list">	
-					{% include "components/table_transactions_list.html.twig" with {transactions: transactions} %}
-					
-					<span class="pull-right">
-						<button type="button" id="createTransactionButton" class="btn btn-primary btn-fab btn-raised mdi-content-add" data-toggle="tooltip" title="Maak een nieuwe transactie aan"></button>
-					</span>
-					
-				</section>
+				<span class="pane-control">
+					<button type="button" id="createTransactionButton" class="btn btn-primary btn-fab btn-raised mdi-content-add" title="Nieuwe transactie"></button>
+				</span>
+				
+				{% include "components/list_transactions.html.twig" with {transactions: transactions} %}
+			</div>
+			
+			<div role="tabpanel" class="tab-pane fade" id="accounts">
+				<span class="pane-control">
+					<button type="button" id="createAccountButton" class="btn btn-primary btn-fab btn-raised mdi-social-person-add" title="Nieuw account"></button>
+				</span>
+				
+				{% include "components/list_accounts.html.twig" with {accounts: accounts} %}
 			</div>
 			
 		</div>
-
+		
 	</div>
+	
+	<!--
+	<script type="text/javascript">
+	$(function() {
+		
+		$('.pane-control').affix({
+			offset: {
+				top: $('#transactions').offset().top,
+				bottom: function () {
+					// - $(window).height()
+					var y = $(document).height() - ($('#transactions').offset().top + $('#transactions').outerHeight());
+					console.log(y, $(window).height());
+					return y;
+				}
+				/*bottom: ($('footer').outerHeight(true) + 
+					$('main.container').outerHeight(true)) + 
+					40*/
+				/*bottom: function () {
+					console.log($('main.container').outerHeight(true));
+					return (this.bottom = $('main.container').outerHeight(true))
+				}*/
+			}
+		})
+		.on('affix.bs.affix', function(event) {	// This event fires immediately before the element has been affixed.
+			console.log(event.type);
+		})
+		.on('affixed.bs.affix', function(event) {	// This event is fired after the element has been affixed.
+			console.log(event.type);
+		})
+		.on('affix-top.bs.affix', function(event) {	// This event fires immediately before the element has been affixed-top.
+			console.log(event.type);
+		})
+		.on('affixed-top.bs.affix', function(event) {	// This event is fired after the element has been affixed-top.
+			console.log(event.type);
+		})
+		.on('affix-bottom.bs.affix', function(event) {	// This event fires immediately before the element has been affixed-bottom.
+			console.log(event.type);
+		})
+		.on('affixed-bottom.bs.affix', function(event) {	// This event is fired after the element has been affixed-bottom.
+			console.log(event.type);
+		})
+		
+	});
+	</script>
+	-->
 	
 	<div id="transactionModal" class="modal fade">
 		<div class="modal-dialog">
@@ -96,11 +154,9 @@
 {% endblock %}
 
 {% block footer %}
-	<footer class="footer">
-		<div class="container text-center">
-			<img id="logo" alt="RECOGNIZE" src="http://recognize.nl/wp-content/uploads/2014/05/recognize_web_logo.png">
-		</div>
-	</footer>
+	<div class="container text-center">
+		<img src="{{ asset('img/recognize_web_logo.png') }}" alt="RECOGNIZE">
+	</div>
 {% endblock %}
 
 {% block lateScript %}

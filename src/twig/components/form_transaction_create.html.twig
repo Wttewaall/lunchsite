@@ -1,17 +1,8 @@
 {% set accounts = (accounts is defined) ? accounts : [] %}
 {% set transactionTypes = (transactionTypes is defined) ? transactionTypes : [] %}
-{% set showLegend = (showLegend is defined) ? showLegend : true %}
 {% set showControls = (showControls is defined) ? showControls : true %}
 
 <form id="transactionForm" class="form-horizontal" autocomplete="off">
-	
-	{% if showLegend %}
-	<legend>Account <small>{{ mode }}</small></legend>
-	{% endif %}
-	
-	{#{% if (editMode == false) %}
-	<h2>{{ [account.first_name, account.last_name]|join(' ') }}</h2>
-	{% endif %}#}
 	
 	{% set firstCol = 'col-sm-2' %}
 	{% set firstColOffset = 'col-sm-offset-2' %}
@@ -56,7 +47,7 @@
 	</div>
 	
 	<div class="form-group">
-		<label for="transaction_type_code" class="{{ firstCol }} control-label">
+		<label for="transaction_type_id" class="{{ firstCol }} control-label">
 			<span class="sr-only">Wijze</span>
 			<i class="mdi-action-credit-card"></i>
 		</label>
@@ -68,7 +59,7 @@
 			
 			<div class="radio radio-success">
 				<label>
-					<input type="radio" name="transaction_type_code" value="{{ type.id }}" {{ checked }}><span class="circle"></span><span class="check"></span>
+					<input type="radio" name="transaction_type_id" value="{{ type.id }}" {{ checked }}><span class="circle"></span><span class="check"></span>
 					<i class="glyphicon glyphicon-{{ typeIcon }}" data-toggle="tooltip" title="{{ type.code|title }}"></i>
 				</label>
 			</div>
@@ -87,12 +78,24 @@
 		</div>
 	</div>
 	
+	<div class="form-group">
+		<label for="transaction_description" class="{{ firstCol }} control-label">
+			<span class="sr-only">Beschrijving</span>
+			<i class="mdi-communication-comment"></i>
+		</label>
+		<div class="{{ secondCol }}">
+			<textarea class="form-control" id='transaction_description' name="transaction_description"></textarea>
+		</div>
+	</div>
+	
 	{% if showControls %}
 	<div class="form-group">
-		<div class="{{ secondCol }} {{ firstColOffset }}">
-			<i class="throbber"></i>
-			<button type="button" class="btn btn-default btn-raised btn-cancel">Annuleren</button>
-			<button type="submit" class="btn btn-primary btn-raised btn-submit">Verzenden</button>
+		<div class="{{ secondCol }} {{ firstColOffset }} text-right">
+			<button type="button" class="btn btn-default btn-raised btn-lg btn-cancel">Annuleren</button>
+			<button type="submit" class="btn btn-primary btn-raised btn-lg btn-submit">Verzenden
+				<i class="mdi-content-send"></i>
+				<i class="throbber throbber-inherit throbber-sm" style="display:none;"></i>
+			</button>
 		</div>
 	</div>
 	{% endif %}

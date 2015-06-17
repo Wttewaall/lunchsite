@@ -48,13 +48,17 @@
 	
 	<body>
 		
-		{% block header %}{% endblock %}
+		<header>
+			{% block header %}{% endblock %}
+		</header>
 
 		<main class="container">
 			{% block sections %}{% endblock %}
 		</main>
-
-		{% block footer %}{% endblock %}
+		
+		<footer>
+			{% block footer %}{% endblock %}
+		</footer>
 		
 	</body>
 

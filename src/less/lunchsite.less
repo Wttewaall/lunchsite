@@ -41,8 +41,74 @@
 }
 
 .btn-primary:not(.btn-link):not(.btn-flat) {
-	//color: @darkbg-text;
-	color: @text-color;
+	color: @darkbg-text;
+}
+
+.lunchpot-logo {
+	font-size: 34px;
+}
+
+.tab-pane {
+	position: relative;
+	
+	.pane-control {
+		position: absolute;
+		right: 15px;
+		z-index: 100;
+		//height: 100%;
+		
+		/*&.affix-top {
+			border: 1px solid red;
+		}
+		&.affix {
+			position: fixed;
+			bottom: 50px;
+			border: 1px solid green;
+		}
+		&.affix-bottom {
+			position: fixed;
+			bottom: 50px;
+			border: 1px solid blue;
+		}*/
+	}
+}
+
+.list-group {
+	.list-group-item {
+		padding: 10px 16px;
+		
+		&.btn {
+			text-transform: none;
+			text-align: left;
+		}
+	}
+	
+	&.tight {
+		.list-group-item {
+			margin: 0 auto;
+			padding: 6px 16px;
+		}
+		
+		.list-group-separator{
+			margin: 5px 0;
+			
+			&::before {
+				width: 100%;
+			}
+		}
+	}
+	
+	.img-left {
+		display: inline-block;
+		float: left;
+		padding-right: 16px;
+	}
+}
+
+img {
+	&.img-sm {
+		width: 33px;
+	}
 }
 
 // overrule all styles with mobile style in sm screen size

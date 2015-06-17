@@ -1,0 +1,61 @@
+{% set transactions = (transactions is defined) ? transactions : [] %}
+
+<section class="transactions-list">
+	
+	<div class="list-group tight">
+	
+		<div class="list-group-item">
+			<div class="row">
+				<label class="col-sm-2">datum</label>
+				<label class="col-sm-2">rekening</label>
+				<label class="col-sm-2">tegenrekening</label>
+				<label class="col-sm-1">bedrag</label>
+				<label class="col-sm-1">wijze</label>
+				<label class="col-sm-4">omschrijving</label>
+			</div>
+		</div>
+	
+	{% for transaction in transactions %}
+		
+		{% set accIcon = (transaction.acc_type == "POT") ? 'piggy-bank' : (transaction.acc_type == "EMPLOYEE") ? 'user': (transaction.acc_type == "INTERN") ? 'education' : 'apple' %}
+		{% set caccIcon = (transaction.cacc_type == "POT") ? 'piggy-bank' : (transaction.cacc_type == "EMPLOYEE") ? 'user': (transaction.cacc_type == "INTERN") ? 'education' : 'apple' %}
+		{% set typeIcon = (transaction.type == "BANK") ? 'credit-card' : (transaction.type == "CASH") ? 'euro': 'heart-empty' %}
+		
+		{% if loop.index0 > 0 %}
+		<div class="list-group-separator"></div>
+		{% endif %}
+		
+		<div class="list-group-item btn btn-default">
+			<input type="hidden" name="transaction_id" value="{{ transaction.id }}">
+			<div class="row">
+				<div class="col-sm-2 moment-duration" data-toggle="tooltip" title="{{ transaction.date|date('d-m-Y H:i:s') }}">
+					{{ transaction.time_diff }}
+				</div>
+				<div class="col-sm-2">
+					<a href="/account/{{ transaction.acc_id }}">
+						<i class="glyphicon glyphicon-{{ accIcon }}"></i>
+						{{ transaction.acc_name }}
+					</a>
+				</div>
+				<div class="col-sm-2">
+					<a href="/account/{{ transaction.cacc_id }}">
+						<i class="glyphicon glyphicon-{{ caccIcon }}"></i>
+						{{ transaction.cacc_name }}
+					</a>
+				</div>
+				<div class="col-sm-1">
+					<span class="prefix-euro">{{ (transaction.amount / 100)|number_format(2) }}</span>
+				</div>
+				<div class="col-sm-1">
+					<i class="glyphicon glyphicon-{{ typeIcon }}" data-toggle="tooltip" title="{{ transaction.type|title }}"></i>
+					{{ transaction.status }}
+				</div>
+				<div class="col-sm-4">
+					{{ transaction.description }}
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+	</div>
+	
+</section>

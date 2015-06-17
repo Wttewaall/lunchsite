@@ -1,0 +1,51 @@
+<section class="accounts-list">
+
+	<div class="list-group">
+	{% for account in accounts %}
+	
+		{% set bank = match('/(?<=[a-zA-Z]{2}\\d{2})[a-zA-Z]{4}/', account.iban) %}
+		{% set bankIcon = (bank == 'ABNA') ? 'img/logos/abnamro.png' : (bank == 'RABO') ? 'img/logos/rabobank.png' : (bank == 'INGB') ? 'img/logos/ing.png' : '' %}
+		
+		{% if loop.index0 > 0 %}
+		<div class="list-group-separator"></div>
+		{% endif %}
+		
+		<div class="list-group-item btn btn-default">
+			<input type="hidden" name="account_id" value="{{ account.id }}">
+			
+			{% if account.image %}
+			<div class="row-picture">
+				<img class="circle" src="{{ asset(account.image) }}" alt="{{ account.first_name }}">
+			</div>
+			{% else %}
+			<div class="row-picture">
+				<img class="circle" src="{{ asset('img/no-image.jpg') }}" alt="{{ account.first_name }}">
+			</div>
+			{% endif %}
+			
+			<div class="row-content row">
+				<div class="least-content">
+					<span class="moment-duration" data-toggle="tooltip" title="{{ account.modified_date|date('d-m-Y H:i:s') }}">
+						{{ account.time_diff }}
+					</span>
+				</div>
+				<div class="col-sm-4">
+					<h4 class="list-group-item-heading">
+						{{ [account.first_name, account.last_name]|join(' ') }}<br/>
+						<small>{{ account.code|title }} {{ account.participation }}%</small>
+					</h4>
+				</div>
+				<div class="list-group-item-text col-sm-8">
+					<div class="img-left">
+						<img class="img-responsive img-sm" src="{{ asset(bankIcon) }}" alt="{{ bank }}">
+					</div>
+					{% if account.account_name is not empty %}{{ account.account_name }}<br/>{% endif %}
+					{% if account.iban is not empty %}{{ account.iban|iban }}{% endif %}
+				</div>
+			</div>
+			
+		</div>
+		
+	{% endfor %}
+	</div>
+</section>
