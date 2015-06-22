@@ -20,6 +20,7 @@ var twig		= require('gulp-twig');
 var sourcemaps	= require('gulp-sourcemaps');
 var autoprefixer	= require('gulp-autoprefixer');
 var minify		= require('gulp-minify-css');
+var prettify	= require('gulp-prettify');
 var uglify		= require('gulp-uglify');
 var uncss		= require('gulp-uncss');
 
@@ -145,6 +146,7 @@ gulp.task('twig', function () {
 	return gulp.src([
 		'src/twig/templates/*.html.twig'
 	]).pipe(twig())
+	.pipe(prettify({indent_size: 2}))
 	.pipe(rename({ extname: '' }))
 	.pipe(gulp.dest('web/'));
 });

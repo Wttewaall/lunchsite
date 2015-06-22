@@ -214,7 +214,11 @@ class Routing {
 		}*/
 		
 		$this->routing->respond('GET', '/transaction/create', function ($request, $response, $service, $app) {
-			return $app->transactionController->createAction($request, $response, $service, $app);
+			return $app->transactionController->create($request->getData());
+		});
+		
+		$this->routing->respond('GET', '/transaction/[i:id]', function ($request, $response, $service, $app) {
+			return $app->transactionController->find($request->id);
 		});
 		
 		/*$this->routing->respond('GET', '/transaction/[create:action]', function ($request, $response, $service, $app) {
