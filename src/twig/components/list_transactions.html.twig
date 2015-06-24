@@ -25,8 +25,7 @@
 		<div class="list-group-separator"></div>
 		{% endif %}
 		
-		<div class="list-group-item btn btn-default">
-			<input type="hidden" name="transaction_id" value="{{ transaction.id }}">
+		<div class="list-group-item btn btn-default" data-id="{{ transaction.id }}">
 			<div class="row">
 				<div class="col-sm-2 moment-duration" data-toggle="tooltip" title="{{ transaction.date|date('d-m-Y H:i:s') }}">
 					{{ transaction.time_diff }}
@@ -44,7 +43,7 @@
 					</a>
 				</div>
 				<div class="col-sm-1">
-					<span class="prefix-euro">{{ (transaction.amount / 100)|number_format(2) }}</span>
+					<span class="prefix-euro">{{ transaction.amount|number_format(2) }}</span>
 				</div>
 				<div class="col-sm-1">
 					<i class="glyphicon glyphicon-{{ typeIcon }}" data-toggle="tooltip" title="{{ transaction.type|title }}"></i>

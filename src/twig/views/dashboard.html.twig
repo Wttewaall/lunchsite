@@ -8,8 +8,8 @@
 			<div class="row">
 				<div class="col-sm-3">
 					<h1><i class="mdi-maps-local-restaurant lunchpot-logo"></i> Lunchpot</h1>
-					<h4 class="prefix-euro">{{ (totalBank.amount / 100)|number_format(2) }} in BANK</h4>
-					<h4 class="prefix-euro">{{ (totalCash.amount / 100)|number_format(2) }} in CASH</h4>
+					<h4 class="prefix-euro">{{ totalBank.amount|number_format(2) }} in BANK</h4>
+					<h4 class="prefix-euro">{{ totalCash.amount|number_format(2) }} in CASH</h4>
 				</div>
 				<div class="col-sm-9">
 					{% include "components/bank_itemrenderer.html.twig" with {account:lunchAccount} %}

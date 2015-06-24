@@ -50,8 +50,8 @@ class Routing {
 			$app->register('connection', function() use ($params) {
 				
 				$db_address = join(';', array(
-					'host='.$params['db_host'],
-					'port='.$params['db_port'],
+					  'host='.$params['db_host'],
+					  'port='.$params['db_port'],
 					'dbname='.$params['db_name']
 				));
 				
@@ -118,6 +118,87 @@ class Routing {
 			});
 		});
 		
+		// ---- root ----
+		
+		$this->routing->respond('GET', '/?', function ($request, $response, $service, $app) {
+			
+			$data = array(
+				'app'				=> $app,
+			    'userData'			=> $app->dashboardRepository->getUserTotals(),
+				'totalCash'			=> $app->dashboardRepository->getTotalCash(),
+				'totalBank'			=> $app->dashboardRepository->getTotalBank(),
+			    'lunchAccount'		=> $app->accountRepository->getLunchpotAccount(),
+			    //'userAccount'		=> $app->accountRepository->getAccountById($currentUser->account_id),
+				'accounts'			=> $app->accountRepository->getUserAccounts(),
+				'transactions'		=> $app->transactionRepository->findAll(true),
+				'transactionTypes'	=> $app->transactionRepository->getTransactionTypes(),
+			);
+			
+			return $app->twig->render('dashboard.html.twig', $data);
+		});
+		
+		$this->routing->respond('POST', '/?', function ($request, $response, $service, $app) {
+			
+			throw new \Exception('Not implemented yet');
+			
+			$service->validateParam('account_id')->notNull();
+			$service->validateParam('account_counterparty_id')->notNull();
+			$service->validateParam('transaction_type_id')->notNull();
+			$service->validateParam('transaction_amount')->notNull()->isPositiveFloat();
+			
+			$transactionStatus = $app->transactionRepository->getTransactionStatusByCode(TransactionStatus::AF);
+			
+			$result = $app->transactionRepository->create(
+				$request->param('account_id'),
+				$request->param('account_counterparty_id'),
+				$request->param('transaction_type_id'),
+				$transactionStatus->id,
+				$request->param('transaction_amount'),
+				$request->param('transaction_description'),
+				$request->param('transaction_date')
+			);
+			
+			$response->json(array(
+				'status' => $result,
+				//'transaction_id' => $result->id
+			));
+		});
+		
+		// ---- transaction ----
+		
+		/*foreach(array('TransactionController') as $controller) {
+			$controller = preg_replace('/^(.+)Controller$/', '$1', $controller);
+			// Include all routes defined in a file under a given namespace
+			$klein->with("/$controller", "controller/$controller.php");
+		}*/
+		
+		$this->routing->respond('POST', '/transaction/[create|read|update|delete:action]', function ($request, $response, $service, $app) {
+			return $app->transactionController->{$request->action.'Action'}($request, $response, $service, $app);
+		});
+		
+		/*$this->routing->respond('GET', '/transaction/[create:action]', function ($request, $response, $service, $app) {
+			$data = array(
+				'accounts'			=> $app->accountRepository->getAccounts(),
+				'transactionTypes'	=> $app->accountRepository->getTransactionTypes()
+			);
+			
+			return $app->twig->render('transaction.html.twig', $data);
+		});
+		
+		$this->routing->respond('POST', '/transaction/add', function ($request, $response, $service, $app) {
+			return var_dump($request->postParams());
+		});*/
+		
+		// ---- account ----
+		
+		$this->routing->respond('GET', '/account/[i:id]', function ($request, $response, $service, $app) {
+			
+			$data = array(
+				'account' => $app->accountRepository->getAccountById($request->id)
+			);
+			return $app->twig->render('account.html.twig', $data);
+		});
+		
 		// -- Handle errors
 		
 		$this->routing->onHttpError(function ($code, $router) {
@@ -150,98 +231,6 @@ class Routing {
 					$router->response()->body('Oh no, a bad error happened that caused a '. $code);
 				}
 			}
-		});
-		
-		// ---- root ----
-		$this->routing->respond('GET', '/?', function ($request, $response, $service, $app) {
-			
-			$data = array(
-				'app'				=> $app,
-			    'userData'			=> $app->dashboardRepository->getUserTotals(),
-				'totalCash'			=> $app->dashboardRepository->getTotalCash(),
-				'totalBank'			=> $app->dashboardRepository->getTotalBank(),
-			    'lunchAccount'		=> $app->accountRepository->getLunchpotAccount(),
-				'accounts'			=> $app->accountRepository->getUserAccounts(),
-				'transactions'		=> $app->transactionRepository->getAllDetailed(),
-				'transactionTypes'	=> $app->transactionRepository->getTransactionTypes(),
-			);
-			
-			return $app->twig->render('dashboard.html.twig', $data);
-		});
-		
-		$this->routing->respond('POST', '/?', function ($request, $response, $service, $app) {
-			
-			throw new \Exception('Not implemented yet');
-			
-			$service->validateParam('account_id')->notNull();
-			$service->validateParam('account_counterparty_id')->notNull();
-			$service->validateParam('transaction_type_id')->notNull();
-			$service->validateParam('transaction_amount')->notNull()->isPositiveFloat();
-			
-			
-			/*$is_valid = GUMP::is_valid($request->postParams(), array(
-				'username' => 'required|alpha_numeric',
-				'password' => 'required|max_len,100|min_len,6'
-			));
-			
-			if (!$is_valid) throw new \Exception('invalid input: '.print_r($is_valid));*/
-			
-			
-			$transactionStatus = $app->transactionRepository->getTransactionStatusByCode(TransactionStatus::AF);
-			
-			$result = $app->transactionRepository->create(
-				$request->param('account_id'),
-				$request->param('account_counterparty_id'),
-				$request->param('transaction_type_id'),
-				$transactionStatus->id,
-				$request->param('transaction_amount'),
-				$request->param('transaction_description'),
-				$request->param('transaction_date')
-			);
-			
-			$response->json(array(
-				'status' => $result,
-				//'transaction_id' => $result->id
-			));
-		});
-		
-		// ---- transaction ----
-		
-		/*foreach(array('TransactionController') as $controller) {
-			$controller = preg_replace('/^(.+)Controller$/', '$1', $controller);
-			// Include all routes defined in a file under a given namespace
-			$klein->with("/$controller", "controller/$controller.php");
-		}*/
-		
-		$this->routing->respond('GET', '/transaction/create', function ($request, $response, $service, $app) {
-			return $app->transactionController->create($request->getData());
-		});
-		
-		$this->routing->respond('GET', '/transaction/[i:id]', function ($request, $response, $service, $app) {
-			return $app->transactionController->find($request->id);
-		});
-		
-		/*$this->routing->respond('GET', '/transaction/[create:action]', function ($request, $response, $service, $app) {
-			$data = array(
-				'accounts'			=> $app->accountRepository->getAccounts(),
-				'transactionTypes'	=> $app->accountRepository->getTransactionTypes()
-			);
-			
-			return $app->twig->render('transaction.html.twig', $data);
-		});
-		
-		$this->routing->respond('POST', '/transaction/add', function ($request, $response, $service, $app) {
-			return var_dump($request->postParams());
-		});*/
-		
-		// ---- account ----
-		
-		$this->routing->respond('GET', '/account/[i:id]', function ($request, $response, $service, $app) {
-			
-			$data = array(
-				'account' => $app->accountRepository->getAccountById($request->id)
-			);
-			return $app->twig->render('account.html.twig', $data);
 		});
 		
 		$this->routing->dispatch();

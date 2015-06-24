@@ -150,16 +150,16 @@ function transactionFormSubmitHandler(event) {
 }
 
 function transactionListGroupItemClickHandler(event) {
-	var id = $(event.currentTarget).find('input[name="transaction_id"]').val();
+	var id = $(event.currentTarget).data('id');
 	
-	var $modal = $('#transactionModal').transactionModal();
-	$modal.getTransactionData(id);
+	var $modal = $('#transactionModal');
+	var $transactionModal = $modal.transactionModal();
+	$transactionModal.getTransaction(id);
 	$modal.modal('show');
-	
-	console.log("edit transaction:", id);
 }
 
 function accountsListGroupItemClickHandler(event) {
-	var id = $(event.currentTarget).find('input[name="account_id"]').val();
-	console.log("edit account_id:", id);
+	var id = $(event.currentTarget).data('id');
+	
+	console.log("edit account id:", id);
 }

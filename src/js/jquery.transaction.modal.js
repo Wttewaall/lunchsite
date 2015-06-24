@@ -2,29 +2,47 @@
 	'use strict';
 	
 	var transactionModal = function(element, options) {
-		var modalProxy = {
+		
+		var TransactionModal = {
 			
-			getTransactionData: function(id) {
-				console.log('getting TransactionData ...');
+			getTransaction: function(id) {
+				var self = this;
+				
 				$.ajax({
-					url: '/transaction/'+id,
-					data: null,
-					success: function(data, textStatus, jqXHR) {
-						console.log(data);
+					type: 'POST',
+					url: '/transaction/read',
+					data: {id: id},
+					dataType: 'json',
+					
+					beforeSend: function() {
+						// hide form and show loader
 					},
-					dataType: 'json'
+					
+					success: function(data, textStatus, jqXHR) {
+						self.populateData(data);
+					},
+					
+					error: function() {
+						console.warn('error');
+					},
+					
+					complete: function() {
+						// show form and hide loader
+					}
 				});
 				return this;
 			},
 			
 			populateData: function(data) {
-				var $scope = $(this);
-				$('input[name="account_id"]', $scope).val(data.accountId);
-				$('input[name="account_counterparty_id"]', $scope).val(data.accountCounterpartyId);
-				$('input[name="transaction_amount"]', $scope).val(data.transactionAmount);
-				$('input[name="transaction_type_id"][value="'+data.transactionTypeId+'"]', $scope).prop('checked', true);
-				$('input[name="transaction_date"]', $scope).val(data.transactionDate);
-				$('input[name="transaction_description"]', $scope).val(data.transactionDescription);
+				var $scope = $('#transactionForm', $(element));
+				
+				$('select[name="account_id"]', $scope).val(data.acc_id);
+				$('select[name="account_counterparty_id"]', $scope).val(data.cacc_id);
+				$('input[name="transaction_amount"]', $scope).val(parseFloat(data.amount));
+				$('input[name="transaction_type_id"][value="'+data.type_id+'"]', $scope).prop('checked', true);
+				$('input[name="transaction_date"]', $scope).val(data.date);
+				$('textarea[name="transaction_description"]', $scope).val(data.description);
+				
 				return this;
 			},
 			
@@ -34,18 +52,21 @@
 			}
 		};
 		
-		return modalProxy;
-	}
+		return TransactionModal;
+	};
 	
+	// initializes and returns the TransactionModal plugin
 	$.fn.transactionModal = function (options) {
         return this.each(function () {
             var $this = $(this);
+            
             if (!$this.data('TransactionModal')) {
                 // create a private copy of the defaults object
                 options = $.extend(true, {}, $.fn.transactionModal.defaults, options);
                 $this.data('TransactionModal', transactionModal($this, options));
             }
-        });
+            
+        }).data('TransactionModal');
     };
  
 }( jQuery ));

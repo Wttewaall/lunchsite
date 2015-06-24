@@ -69,12 +69,14 @@ class DashboardRepository extends Repository {
 			IF(acc.id = $account_id, acc.first_name, cacc.first_name) as name,
 			tt.code,
 			SUM(
-				IF(acc.id = $account_id, trans.amount * -1, trans.amount)
+				IF(acc.id = $account_id, trans.amount * -1, trans.amount) / 100
 			) as amount
+		
 		FROM transactions trans
 		LEFT JOIN transaction_type tt ON tt.id = trans.fk_transaction_type
 		LEFT JOIN accounts acc ON acc.id = trans.fk_account_id
 		LEFT JOIN accounts cacc ON cacc.id = trans.fk_counterparty_account_id
+		
 		WHERE (acc.id = $account_id OR cacc.id = $account_id) AND tt.code = 'CASH';";
 		
 		return $this->connection->get_row($sql);
@@ -92,14 +94,16 @@ class DashboardRepository extends Repository {
 			IF(acc.id = $account_id, acc.first_name, cacc.first_name) as name,
 			tt.code,
 			SUM(
-				IF(acc.id = $account_id, trans.amount * -1, trans.amount)
+				IF(acc.id = $account_id, trans.amount * -1, trans.amount) / 100
 			) as amount
+		
 		FROM transactions trans
 		LEFT JOIN transaction_type tt ON tt.id = trans.fk_transaction_type
 		LEFT JOIN accounts acc ON acc.id = trans.fk_account_id
 		LEFT JOIN accounts cacc ON cacc.id = trans.fk_counterparty_account_id
 		LEFT JOIN account_state cacc_state ON cacc_state.fk_account_id = cacc.id
 		LEFT JOIN account_type cacc_type ON cacc_type.id = cacc_state.fk_type_id
+		
 		WHERE (acc.id = $account_id OR cacc.id = $account_id) AND tt.code = 'BANK' AND cacc_type.code NOT IN ('Employee', 'Intern')";
 		
 		return $this->connection->get_row($sql);

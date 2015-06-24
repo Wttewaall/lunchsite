@@ -29,6 +29,7 @@ gulp.task('deps', function () {
 
 	var assets = gulp.src([
 		'assets/**/*',
+		'assets/.htaccess',
 	]).pipe(gulp.dest('web/'));
 
 	var images = gulp.src([
