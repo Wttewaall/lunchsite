@@ -9,7 +9,64 @@ namespace Lunchpot;
  */
 class AccountRepository extends Repository {
 	
-	public function getAccounts($ignoreDeleted = false) {
+	public function find($id, $ignoreDeleted = true) {
+		$filter	= "WHERE account.id = $id";
+		$order	= "";
+		$limit	= "";
+		
+		$sql = $this->buildSQL($filter, $order, $limit, $ignoreDeleted);
+		return $this->connection->get_row( $sql );
+	}
+	
+	public function findAll($ignoreDeleted = true) {
+		$filter	= "";
+		$order	= "ORDER BY account.first_name ASC";
+		$limit	= "";
+		
+		$sql = $this->buildSQL($filter, $order, $limit, $ignoreDeleted);
+		return $this->connection->get_results( $sql );
+	}
+	
+	public function findLastInserted($ignoreDeleted = true) {
+		$filter	= "";
+		$order	= "ORDER BY account.id DESC";
+		$limit	= "LIMIT 1";
+		
+		$sql = $this->buildSQL($filter, $order, $limit, $ignoreDeleted);
+		return $this->connection->get_row( $sql );
+	}
+	
+	protected function buildSQL($filter, $order, $limit, $ignoreDeleted = true) {
+		$filter	= is_string($filter) ? $filter : '';
+		$order	= is_string($order)  ? $order  : '';
+		$limit	= is_string($limit)  ? $limit  : '';
+		
+		$sql = "SELECT
+				account.*,
+				
+				(SELECT acc_t.code
+					FROM account_state state
+					LEFT JOIN account_type acc_t ON acc_t.id = state.fk_type_id
+					WHERE state.fk_account_id = account.id
+					ORDER BY state.modified_date DESC
+					LIMIT 1
+				) AS code,
+				
+				(SELECT state.participation
+					FROM account_state state
+					WHERE state.fk_account_id = account.id
+					ORDER BY state.modified_date DESC
+					LIMIT 1
+				) AS participation
+			
+			FROM accounts account";
+		
+		return join("\n", array($sql, $filter, $order)).';';
+	}
+	
+	// ---- TODO: de rest opschonen ----
+	
+	public function getAccounts($ignoreDeleted = true) {
 		$whereFilter = ($ignoreDeleted) ? " WHERE account.deleted_date IS NULL" : "";
 		
 		$sql = "SELECT

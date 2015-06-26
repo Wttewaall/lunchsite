@@ -45,7 +45,7 @@ gulp.task('deps', function () {
 	var vendorsCSS = gulp.src([
 		'bower_components/form.validation/dist/css/formValidation.css',
 		'bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css',
-		'bower_components/dropdown.js/jquery.dropdown.css',
+		'bower_components/ladda-bootstrap/dist/ladda.css',
 	]).pipe(concat('vendors.css'))
 	.pipe(gulp.dest('web/css/'));
 	
@@ -66,7 +66,9 @@ gulp.task('deps', function () {
 		'bower_components/bootbox/bootbox.js',
 		'bower_components/bootstrap-material-design/dist/js/material.js',
 		'bower_components/bootstrap-material-design/dist/js/ripples.js',
-		'bower_components/dropdown.js/jquery.dropdown.js'
+		'bower_components/ladda-bootstrap/dist/ladda.js',
+		'bower_components/ladda-bootstrap/dist/spin.js',
+		'bower_components/bootstrap-confirmation/bootstrap-confirmation.js',
 	])
 	.pipe(concat('vendors.js'))
 	.pipe(gulp.dest('web/js/'));

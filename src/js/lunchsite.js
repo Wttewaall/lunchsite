@@ -28,7 +28,7 @@ $(document).ready(function() {
 	// ---- form handling ----
 	
 	$('body')
-		.on('click', "#createTransactionButton", function() { $('#transactionModal').modal('show'); })
+		.on('click', "#createTransactionButton", transactionModalOpenHandler)
 		.on('click', 'form .btn-cancel', modalCloseHandler)
 		.on('success.form.fv', '#transactionForm', transactionFormSubmitHandler)
 		.on("click", ".transactions-list .list-group-item", transactionListGroupItemClickHandler)
@@ -90,43 +90,14 @@ function toggleThrobber(button, show) {
 	if (!!$throbber) $throbber.toggle(show);
 }
 
-function injectModalMethods(modal) {
-	var $modal = $(modal);
-	if (!!$modal.injected) return false;
-	
-	$.fn.getTransactionData = function(id) {
-		console.log('getting TransactionData ...');
-		$.ajax({
-			url: '/transaction/'+id,
-			data: null,
-			success: function(data, textStatus, jqXHR) {
-				console.log(data);
-			},
-			dataType: 'json'
-		});
-		return this;
-	};
-	
-	$.fn.populateData = function(data) {
-		$('input[name="account_id"]', $modal).val(data.accountId);
-		$('input[name="account_counterparty_id"]', $modal).val(data.accountCounterpartyId);
-		$('input[name="transaction_amount"]', $modal).val(data.transactionAmount);
-		$('input[name="transaction_type_id"][value="'+data.transactionTypeId+'"]', $modal).prop('checked', true);
-		$('input[name="transaction_date"]', $modal).val(data.transactionDate);
-		$('input[name="transaction_description"]', $modal).val(data.transactionDescription);
-		return this;
-	};
-	
-	$.fn.reset = function() {
-		console.warn('TODO');
-		return this;
-	};
-	
-	$modal.injected = true;
-	return $modal.injected;
-}
-
 // ---- event handlers ----
+
+function transactionModalOpenHandler(event) {
+	var $modal = $('#transactionModal');
+	var $transactionModal = $modal.transactionModal();
+	$transactionModal.reset();
+	$modal.modal('show');
+}
 
 function modalCloseHandler(event) {
 	$modal = $(event.currentTarget).parents('.modal');
@@ -137,9 +108,11 @@ function transactionFormSubmitHandler(event) {
 	event.preventDefault();
 	var $form = $(event.currentTarget);
 	
-	var data = $form.serialize();
+	var $modal = $('#transactionModal');
+	var $transactionModal = $modal.transactionModal();
+	var data = $transactionModal.getData();
 	
-	postForm('', $form, data).done(function (data) {
+	postForm('transaction/create', $form, data).done(function (data) {
 		
 		$modal = $(event.currentTarget).parents('.modal');
 		if (!!$modal) $modal.modal('hide');

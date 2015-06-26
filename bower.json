@@ -25,6 +25,8 @@
     "eonasdan-bootstrap-datetimepicker": "~4.7.14",
     "bootstrap-material-design": "~0.3.0",
     "dropdown.js": "*",
-    "swiper": "~3.0.7"
+    "swiper": "~3.0.7",
+    "bootstrap-confirmation": "*",
+    "ladda-bootstrap": "~0.1.0"
   }
 }

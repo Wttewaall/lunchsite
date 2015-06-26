@@ -5,6 +5,30 @@
 		
 		var TransactionModal = {
 			
+			createTransaction: function() {
+				var self = this;
+				
+				$.ajax({
+					type: 'POST',
+					url: '/transaction/create',
+					data: self.getData(),
+					dataType: 'json',
+					
+					success: function(data, textStatus, jqXHR) {
+						console.log('success');
+					},
+					
+					error: function() {
+						console.warn('error');
+					}
+				});
+				return this;
+			},
+			
+			validateForm: function() {
+				
+			},
+			
 			getTransaction: function(id) {
 				var self = this;
 				
@@ -19,7 +43,7 @@
 					},
 					
 					success: function(data, textStatus, jqXHR) {
-						self.populateData(data);
+						self.setData(data);
 					},
 					
 					error: function() {
@@ -33,11 +57,32 @@
 				return this;
 			},
 			
-			populateData: function(data) {
+			getData: function() {
 				var $scope = $('#transactionForm', $(element));
 				
-				$('select[name="account_id"]', $scope).val(data.acc_id);
-				$('select[name="account_counterparty_id"]', $scope).val(data.cacc_id);
+				var data = {
+					account_id: $('select[name="account_id"] option:selected', $scope).val(),
+					account_counterparty_id: $('select[name="account_counterparty_id"] option:selected', $scope).val(),
+					transaction_amount: $('input[name="transaction_amount"]', $scope).val(),
+					transaction_type_id: $('input[name="transaction_type_id"]', $scope).val(),
+					transaction_date: $('input[name="transaction_date"]', $scope).val(),
+					transaction_description: $('textarea[name="transaction_description"]', $scope).val()
+				};
+				
+				// from NL to DateTime
+				data.transaction_date = moment(data.transaction_date, 'DD-MM-YYYY HH:mm').format('YYYY-MM-DD HH:mm:ss');
+				
+				return data;
+			},
+			
+			setData: function(data) {
+				var $scope = $('#transactionForm', $(element));
+				
+				// from DateTime to NL
+				data.date = moment(data.date, 'YYYY-MM-DD HH:mm:ss').format('DD-MM-YYYY HH:mm');
+				
+				$('select[name="account_id"] option[value="'+data.acc_id+'"]', $scope).prop('selected', true);
+				$('select[name="account_counterparty_id"] option[value="'+data.cacc_id+'"]', $scope).prop('selected', true);
 				$('input[name="transaction_amount"]', $scope).val(parseFloat(data.amount));
 				$('input[name="transaction_type_id"][value="'+data.type_id+'"]', $scope).prop('checked', true);
 				$('input[name="transaction_date"]', $scope).val(data.date);
@@ -47,7 +92,14 @@
 			},
 			
 			reset: function() {
-				console.warn('TODO');
+				this.setData({
+					acc_id: 1,
+					cacc_id: 1,
+					amount: 0,
+					type_id: 1,
+					date: moment(),
+					description: ''
+				});
 				return this;
 			}
 		};
