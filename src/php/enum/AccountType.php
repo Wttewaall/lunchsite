@@ -8,6 +8,7 @@ class AccountType {
 	const INTERN		= 'INTERN';
 	const POT			= 'POT';
 	const SUPERMARKET	= 'SUPERMARKET';
+	const BANK			= 'BANK';
 	
 	public static $USER_TYPES = array(
 		self::EMPLOYEE,
@@ -18,7 +19,8 @@ class AccountType {
 		self::EMPLOYEE,
 		self::INTERN,
 		self::POT,
-		self::SUPERMARKET
+		self::SUPERMARKET,
+		self::BANK
 	);
 	
 }

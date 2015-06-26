@@ -104,6 +104,7 @@ function modalCloseHandler(event) {
 	if (!!$modal) $modal.modal('hide');
 }
 
+// TODO: move to jquery.transaction.modal.js
 function transactionFormSubmitHandler(event) {
 	event.preventDefault();
 	var $form = $(event.currentTarget);
@@ -112,12 +113,14 @@ function transactionFormSubmitHandler(event) {
 	var $transactionModal = $modal.transactionModal();
 	var data = $transactionModal.getData();
 	
-	postForm('transaction/create', $form, data).done(function (data) {
+	var url = 'transaction/'+$transactionModal.getMode();
+	
+	postForm(url, $form, data).done(function (data) {
 		
 		$modal = $(event.currentTarget).parents('.modal');
 		if (!!$modal) $modal.modal('hide');
 		
-		bootbox.alert('Het formulier is succesvol verzonden');
+		bootbox.alert('Het formulier is succesvol verstuurd');
 		resetForm($form);
 	});
 }
@@ -127,6 +130,7 @@ function transactionListGroupItemClickHandler(event) {
 	
 	var $modal = $('#transactionModal');
 	var $transactionModal = $modal.transactionModal();
+	$transactionModal.setMode('update');
 	$transactionModal.getTransaction(id);
 	$modal.modal('show');
 }

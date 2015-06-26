@@ -28,14 +28,41 @@ class TransactionController {
 		$transaction = ($result) ? $app->transactionRepository->findLastInserted() : null;
 		
 		$response->json(array(
-			'status' => $result,
+			'status' => ($result == 1),
 			'transaction' => $transaction
 		));
 	}
 	
 	public function readAction($request, $response, $service, $app) {
 		$transaction = $app->transactionRepository->find($request->id, true);
-		return $response->json($transaction);
+		$response->json($transaction);
+	}
+	
+	public function updateAction($request, $response, $service, $app) {
+		
+		$result = $app->transactionRepository->update(
+			$request->param('id'),
+			array(
+			    'fk_account_id'					=> $request->param('account_id'),
+				'fk_counterparty_account_id'	=> $request->param('account_counterparty_id'),
+				'fk_transaction_type'			=> $request->param('transaction_type_id'),
+				'amount'						=> $request->param('transaction_amount'),
+				'description'					=> $request->param('transaction_description'),
+				'date'							=> $request->param('transaction_date')
+			)
+		);
+		
+		$response->json(array(
+			'status' => ($result == 1)
+		));
+	}
+	
+	public function deleteAction($request, $response, $service, $app) {
+		$result = $app->transactionRepository->delete($request->id);
+		
+		$response->json(array(
+			'status' => ($result == 1)
+		));
 	}
 	
 }

@@ -5,6 +5,20 @@
 		
 		var TransactionModal = {
 			
+			mode: 'create',
+			
+			getMode: function() {
+				return this.mode;
+			},
+			
+			setMode: function(mode) {
+				this.mode = mode;
+				
+				var $title = $(element).find('.modal-title');
+				if (mode == 'create') $title.text('Nieuwe transactie');
+				if (mode == 'update') $title.text('Transactie aanpassen');
+			},
+			
 			createTransaction: function() {
 				var self = this;
 				
@@ -26,7 +40,7 @@
 			},
 			
 			validateForm: function() {
-				
+				return true;
 			},
 			
 			getTransaction: function(id) {
@@ -57,10 +71,15 @@
 				return this;
 			},
 			
+			setTransaction: function(data) {
+				this.setData(data);
+			},
+			
 			getData: function() {
 				var $scope = $('#transactionForm', $(element));
 				
 				var data = {
+					id: $('input[name="transaction_id"]', $scope).val(),
 					account_id: $('select[name="account_id"] option:selected', $scope).val(),
 					account_counterparty_id: $('select[name="account_counterparty_id"] option:selected', $scope).val(),
 					transaction_amount: $('input[name="transaction_amount"]', $scope).val(),
@@ -81,6 +100,10 @@
 				// from DateTime to NL
 				data.date = moment(data.date, 'YYYY-MM-DD HH:mm:ss').format('DD-MM-YYYY HH:mm');
 				
+				console.log('data:', data);
+				
+				// set id
+				$('input[name="transaction_id"]', $scope).val(data.id);
 				$('select[name="account_id"] option[value="'+data.acc_id+'"]', $scope).prop('selected', true);
 				$('select[name="account_counterparty_id"] option[value="'+data.cacc_id+'"]', $scope).prop('selected', true);
 				$('input[name="transaction_amount"]', $scope).val(parseFloat(data.amount));
@@ -92,6 +115,8 @@
 			},
 			
 			reset: function() {
+				this.setMode('create');
+				
 				this.setData({
 					acc_id: 1,
 					cacc_id: 1,

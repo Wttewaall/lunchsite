@@ -25,10 +25,10 @@ class Repository {
 		return $date->format(DateTime::ISO8601);
 	}
 	
-	public function prepareFields() {
+	public function prepareFields($fieldset) {
 		$fields = array();
-		foreach (func_get_args() as $key => $value) {
-			$fields[] = $key.' = '.$this->sqlValue($value);
+		foreach ($fieldset as $key => $value) {
+			$fields[] = '`'.$key.'` = '.$this->sqlValue($value);
 		}
 		return join(', ', $fields);
 	}

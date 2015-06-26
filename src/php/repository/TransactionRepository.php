@@ -66,6 +66,11 @@ class TransactionRepository extends Repository {
 	}
 	
 	public function update($id, array $fieldset) {
+		
+		if (isset($fieldset['amount'])) {
+			$fieldset['amount'] = floatval($fieldset['amount']) * 100;
+		}
+		
 		// combine all fields
 		$sqlFields = $this->prepareFields($fieldset);
 		
