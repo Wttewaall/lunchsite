@@ -24,20 +24,24 @@
 			
 			<div class="row-content row">
 				<div class="least-content">
-					<span class="moment-duration" data-toggle="tooltip" title="{{ account.modified_date|date('d-m-Y H:i:s') }}">
-						{{ account.time_diff }}
+					<span data-toggle="tooltip" title="{{ account.created_date|date('d-m-Y H:i:s') }}">
+						{{ account.created_date }}
 					</span>
 				</div>
 				<div class="col-sm-4">
 					<h4 class="list-group-item-heading">
 						{{ [account.first_name, account.last_name]|join(' ') }}<br/>
+						{% if account.code in ['EMPLOYEE', 'INTERN'] %}
 						<small>{{ account.code|title }} {{ account.participation }}%</small>
+						{% endif %}
 					</h4>
 				</div>
 				<div class="list-group-item-text col-sm-8">
+					{% if account.iban is not empty %}
 					<div class="img-left">
 						<img class="img-responsive img-sm" src="{{ asset(bankIcon) }}" alt="{{ bank }}">
 					</div>
+					{% endif %}
 					{% if account.account_name is not empty %}{{ account.account_name }}<br/>{% endif %}
 					{% if account.iban is not empty %}{{ account.iban|iban }}{% endif %}
 				</div>

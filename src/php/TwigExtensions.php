@@ -33,6 +33,14 @@ class TwigExtensions {
 			return preg_replace($pattern, $replacement, $subject);
 		}));
 		
+		$twig->addFunction(new Twig_Function('accountIcon', function($type) {
+			return TwigExtensions::getAccountIcon($type);
+		}));
+		
+		$twig->addFunction(new Twig_Function('transactionIcon', function($type) {
+			return TwigExtensions::getTransactionIcon($type);
+		}));
+		
 		// delimit an iban string on each 4th character with a space
 		$twig->addFilter(new Twig_Filter('iban', function($value) {
 			
@@ -63,6 +71,26 @@ class TwigExtensions {
 	
 	public static function getFullURL($use_forwarded_host = false) {
 		return $this->getFullHost($use_forwarded_host) . $_SERVER['REQUEST_URI'];
+	}
+	
+	public static function getAccountIcon($type) {
+		switch ($type) {
+			case 'POT'			: return 'piggy-bank';
+			case 'EMPLOYEE'		: return 'user';
+			case 'INTERN'		: return 'education';
+			case 'BANK'			: return 'usd';
+			case 'SUPERMARKET'	: return 'apple';
+		}
+		return '';
+	}
+	
+	public static function getTransactionIcon($type) {
+		switch ($type) {
+			case 'BANK'			: return 'credit-card';
+			case 'CASH'			: return 'euro';
+			case 'NATURA'		: return 'heart-empty';
+		}
+		return '';
 	}
 	
 }

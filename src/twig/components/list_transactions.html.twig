@@ -17,9 +17,9 @@
 	
 	{% for transaction in transactions %}
 		
-		{% set accIcon = (transaction.acc_type == "POT") ? 'piggy-bank' : (transaction.acc_type == "EMPLOYEE") ? 'user': (transaction.acc_type == "INTERN") ? 'education' : 'apple' %}
-		{% set caccIcon = (transaction.cacc_type == "POT") ? 'piggy-bank' : (transaction.cacc_type == "EMPLOYEE") ? 'user': (transaction.cacc_type == "INTERN") ? 'education' : 'apple' %}
-		{% set typeIcon = (transaction.type == "BANK") ? 'credit-card' : (transaction.type == "CASH") ? 'euro': 'heart-empty' %}
+		{% set accIcon = accountIcon(transaction.acc_type) %}
+		{% set caccIcon = accountIcon(transaction.cacc_type) %}
+		{% set typeIcon = transactionIcon(transaction.type) %}
 		
 		{% if loop.index0 > 0 %}
 		<div class="list-group-separator"></div>

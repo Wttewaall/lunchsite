@@ -12,7 +12,7 @@
 		
 		<tbody>
 		{% for user in userData %}
-			{% set accIcon = (user.type == "POT") ? 'piggy-bank' : (user.type == "EMPLOYEE") ? 'user': (user.type == "INTERN") ? 'education' : 'apple' %}
+			{% set accIcon = accountIcon(user.type) %}
 			{% set amountStyle = (user.amount > 50) ? 'danger' : (user.amount > 0) ? '' : 'success' %}
 			
 			<tr class="{{ amountStyle }}">

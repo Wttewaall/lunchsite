@@ -57,7 +57,14 @@ class AccountRepository extends Repository {
 					WHERE state.fk_account_id = account.id
 					ORDER BY state.modified_date DESC
 					LIMIT 1
-				) AS participation
+				) AS participation,
+
+				(SELECT state.modified_date
+					FROM account_state state
+					WHERE state.fk_account_id = account.id
+					ORDER BY state.modified_date DESC
+					LIMIT 1
+				) AS modified_date
 			
 			FROM accounts account";
 		
@@ -85,7 +92,14 @@ class AccountRepository extends Repository {
 					WHERE state.fk_account_id = account.id
 					ORDER BY state.modified_date DESC
 					LIMIT 1
-				) AS participation
+				) AS participation,
+				
+				(SELECT state.modified_date
+					FROM account_state state
+					WHERE state.fk_account_id = account.id
+					ORDER BY state.modified_date DESC
+					LIMIT 1
+				) AS modified_date
 			
 			FROM accounts account
 			$whereFilter
