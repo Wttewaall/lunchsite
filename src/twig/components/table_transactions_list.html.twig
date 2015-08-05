@@ -22,10 +22,10 @@
 			
 			<tr>
 				<td>{{ transaction.date|date('d-m-Y') }}</td>
-				<td><a href="/account/{{ transaction.acc_id }}"><i class="glyphicon glyphicon-{{ accIcon }}"></i> {{ transaction.acc_name }}</a></td>
-				<td><a href="/account/{{ transaction.cacc_id }}"><i class="glyphicon glyphicon-{{ caccIcon }}"></i> {{ transaction.cacc_name }}</a></td>
+				<td><a href="/account/{{ transaction.acc_id }}"><i class="{{ accIcon }}"></i> {{ transaction.acc_name }}</a></td>
+				<td><a href="/account/{{ transaction.cacc_id }}"><i class="{{ caccIcon }}"></i> {{ transaction.cacc_name }}</a></td>
 				<td class="prefix-euro">{{ (transaction.amount / 100)|number_format(2) }}</td>
-				<td><i class="glyphicon glyphicon-{{ typeIcon }}" data-toggle="tooltip" title="{{ transaction.type|title }}"></i> {{ transaction.status }}</td>
+				<td><i class="{{ typeIcon }}" data-toggle="tooltip" title="{{ transaction.type|title }}"></i> {{ transaction.status }}</td>
 				<td>{{ transaction.description }}</td>
 			</tr>
 		{% endfor %}

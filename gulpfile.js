@@ -151,7 +151,10 @@ gulp.task('twig', function () {
 	]).pipe(twig())
 	.pipe(prettify({indent_size: 2}))
 	.pipe(rename({ extname: '' }))
-	.pipe(gulp.dest('web/'));
+	.pipe(gulp.dest('web/'))
+	.on('error', function (error) {
+		console.error('twig error: '+error);
+	});
 });
 
 // Watchers

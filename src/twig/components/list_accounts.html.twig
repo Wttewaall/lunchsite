@@ -3,9 +3,6 @@
 	<div class="list-group">
 	{% for account in accounts %}
 	
-		{% set bank = match('/(?<=[a-zA-Z]{2}\\d{2})[a-zA-Z]{4}/', account.iban) %}
-		{% set bankIcon = (bank == 'ABNA') ? 'img/logos/abnamro.png' : (bank == 'RABO') ? 'img/logos/rabobank.png' : (bank == 'INGB') ? 'img/logos/ing.png' : '' %}
-		
 		{% if loop.index0 > 0 %}
 		<div class="list-group-separator"></div>
 		{% endif %}
@@ -39,7 +36,7 @@
 				<div class="list-group-item-text col-sm-8">
 					{% if account.iban is not empty %}
 					<div class="img-left">
-						<img class="img-responsive img-sm" src="{{ asset(bankIcon) }}" alt="{{ bank }}">
+						<img class="img-responsive img-sm" src="{{ asset( bankImage(account.iban) ) }}" alt="">
 					</div>
 					{% endif %}
 					{% if account.account_name is not empty %}{{ account.account_name }}<br/>{% endif %}

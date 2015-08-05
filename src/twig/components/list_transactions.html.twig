@@ -27,18 +27,21 @@
 		
 		<div class="list-group-item btn btn-default" data-id="{{ transaction.id }}">
 			<div class="row">
-				<div class="col-sm-2 moment-duration" data-toggle="tooltip" title="{{ transaction.date|date('d-m-Y H:i:s') }}">
+				{#<div class="col-sm-2 moment-duration" data-toggle="tooltip" title="{{ transaction.date|date('d-m-Y H:i:s') }}">
 					{{ transaction.time_diff }}
+				</div>#}
+				<div class="col-sm-2">
+					{{ transaction.date|date('d-m-Y') }}
 				</div>
 				<div class="col-sm-2">
 					<a href="/account/{{ transaction.acc_id }}">
-						<i class="glyphicon glyphicon-{{ accIcon }}"></i>
+						<i class="{{ accIcon }}"></i>
 						{{ transaction.acc_name }}
 					</a>
 				</div>
 				<div class="col-sm-2">
 					<a href="/account/{{ transaction.cacc_id }}">
-						<i class="glyphicon glyphicon-{{ caccIcon }}"></i>
+						<i class="{{ caccIcon }}"></i>
 						{{ transaction.cacc_name }}
 					</a>
 				</div>
@@ -46,7 +49,7 @@
 					<span class="prefix-euro">{{ transaction.amount|number_format(2) }}</span>
 				</div>
 				<div class="col-sm-1">
-					<i class="glyphicon glyphicon-{{ typeIcon }}" data-toggle="tooltip" title="{{ transaction.type|title }}"></i>
+					<i class="{{ typeIcon }}" data-toggle="tooltip" title="{{ transaction.type|title }}"></i>
 					{{ transaction.status }}
 				</div>
 				<div class="col-sm-4">

@@ -41,6 +41,10 @@ class TwigExtensions {
 			return TwigExtensions::getTransactionIcon($type);
 		}));
 		
+		$twig->addFunction(new Twig_Function('bankImage', function($iban) {
+			return TwigExtensions::getBankImage($iban);
+		}));
+		
 		// delimit an iban string on each 4th character with a space
 		$twig->addFilter(new Twig_Filter('iban', function($value) {
 			
@@ -75,20 +79,32 @@ class TwigExtensions {
 	
 	public static function getAccountIcon($type) {
 		switch ($type) {
-			case 'POT'			: return 'piggy-bank';
-			case 'EMPLOYEE'		: return 'user';
-			case 'INTERN'		: return 'education';
-			case 'BANK'			: return 'usd';
-			case 'SUPERMARKET'	: return 'apple';
+			case 'POT'			: return 'glyphicon glyphicon-piggy-bank';
+			case 'EMPLOYEE'		: return 'glyphicon glyphicon-user';
+			case 'INTERN'		: return 'glyphicon glyphicon-education';
+			case 'BANK'			: return 'glyphicon glyphicon-usd';
+			case 'SUPERMARKET'	: return 'glyphicon glyphicon-apple';
 		}
 		return '';
 	}
 	
 	public static function getTransactionIcon($type) {
 		switch ($type) {
-			case 'BANK'			: return 'credit-card';
-			case 'CASH'			: return 'euro';
-			case 'NATURA'		: return 'heart-empty';
+			case 'BANK'			: return 'glyphicon glyphicon-credit-card';
+			case 'CASH'			: return 'glyphicon glyphicon-euro';
+			case 'NATURA'		: return 'glyphicon glyphicon-heart-empty';
+		}
+		return '';
+	}
+	
+	public static function getBankImage($iban) {
+		preg_match('/(?<=[a-zA-Z]{2}\\d{2})[a-zA-Z]{4}/', $iban, $matches);
+		$bank = (count($matches) > 0) ? $matches[0] : null;
+		
+		switch ($bank) {
+			case 'ABNA'			: return 'img/logos/abnamro.png';
+			case 'RABO'			: return 'img/logos/rabobank.png';
+			case 'INGB'			: return 'img/logos/ing.png';
 		}
 		return '';
 	}

@@ -57,12 +57,12 @@
 		
 		{% for type in transactionTypes %}
 			{% set checked = (loop.index0 == 0) ? 'checked="checked"' : '' %}
-			{% set typeIcon = (type.code == "BANK") ? 'credit-card' : (type.code == "CASH") ? 'euro': 'heart-empty' %}
+			{% set typeIcon = transactionIcon(type.code) %}
 			
 			<div class="radio radio-success">
 				<label>
 					<input type="radio" name="transaction_type_id" value="{{ type.id }}" {{ checked }}><span class="circle"></span><span class="check"></span>
-					<i class="glyphicon glyphicon-{{ typeIcon }}" data-toggle="tooltip" title="{{ type.code|title }}"></i>
+					<i class="{{ typeIcon }}" data-toggle="tooltip" title="{{ type.code|title }}"></i>
 				</label>
 			</div>
 			
