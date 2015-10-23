@@ -4,20 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a9dae7c55cef83de2f4f8a6962665a13",
+    "hash": "3d39640f1c0190dfbf38c9d6f8ddef90",
+    "content-hash": "43f60b5778aade5394ecfeda0315e9d2",
     "packages": [
         {
             "name": "jv2222/ezsql",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git@github.com:jv2222/ezSQL.git",
-                "reference": "cc620863b78c65597d72aec581161d9cb81cedd9"
+                "url": "https://github.com/ezSQL/ezSQL.git",
+                "reference": "53b9773a8b69d3c292c9445766a7dcd2de1c619d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jv2222/ezSQL/zipball/cc620863b78c65597d72aec581161d9cb81cedd9",
-                "reference": "cc620863b78c65597d72aec581161d9cb81cedd9",
+                "url": "https://api.github.com/repos/ezSQL/ezSQL/zipball/53b9773a8b69d3c292c9445766a7dcd2de1c619d",
+                "reference": "53b9773a8b69d3c292c9445766a7dcd2de1c619d",
                 "shasum": ""
             },
             "type": "library",
@@ -48,7 +49,7 @@
                 }
             ],
             "description": "PHP class to make interacting with a database ridiculusly easy.",
-            "time": "2014-10-16 08:07:37"
+            "time": "2015-07-25 01:56:13"
         },
         {
             "name": "klein/klein",
@@ -112,16 +113,20 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "34e943ae7cca8f9aff666fb87c3e6860e18fc138"
+                "reference": "66e2275527ccd4e70dc4713a5f1dc8bca3fc7f39"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/fe67c5ba3a2418f671307b17adfd8914ffc04b0b",
-                "reference": "34e943ae7cca8f9aff666fb87c3e6860e18fc138",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/66e2275527ccd4e70dc4713a5f1dc8bca3fc7f39",
+                "reference": "66e2275527ccd4e70dc4713a5f1dc8bca3fc7f39",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5.0"
+                "php": ">=5.5"
+            },
+            "require-dev": {
+                "symfony/debug": "~2.7",
+                "symfony/phpunit-bridge": "~2.7"
             },
             "type": "library",
             "extra": {
@@ -161,7 +166,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2015-03-17 06:32:29"
+            "time": "2015-10-21 06:08:09"
         },
         {
             "name": "wixel/gump",
@@ -169,12 +174,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Wixel/GUMP.git",
-                "reference": "bed693f3e371ec498a8254cecc7adc20cdf471a1"
+                "reference": "b9bc4dda5ce787b91753b587b6bd72c80595c683"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Wixel/GUMP/zipball/bed693f3e371ec498a8254cecc7adc20cdf471a1",
-                "reference": "bed693f3e371ec498a8254cecc7adc20cdf471a1",
+                "url": "https://api.github.com/repos/Wixel/GUMP/zipball/b9bc4dda5ce787b91753b587b6bd72c80595c683",
+                "reference": "b9bc4dda5ce787b91753b587b6bd72c80595c683",
                 "shasum": ""
             },
             "type": "library",
@@ -183,7 +188,7 @@
                     "gump.class.php"
                 ]
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -209,17 +214,17 @@
                     "homepage": "http://res.no/"
                 },
                 {
-                    "name": "Sean Nieuwoudt",
-                    "homepage": "http://wixelhq.com"
-                },
-                {
                     "name": "Rob Crowe",
                     "homepage": "http://vivalacrowe.com"
+                },
+                {
+                    "name": "Sean Nieuwoudt",
+                    "homepage": "https://wixelhq.com"
                 }
             ],
             "description": "A fast, extensible & stand-alone PHP input validation class that allows you to validate any data",
-            "homepage": "http://wixelhq.com/",
-            "time": "2015-06-08 07:05:33"
+            "homepage": "https://wixelhq.com/",
+            "time": "2015-09-02 07:46:46"
         }
     ],
     "packages-dev": [],

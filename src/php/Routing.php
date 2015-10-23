@@ -137,6 +137,14 @@ class Routing {
 			return $app->twig->render('dashboard.html.twig', $data);
 		});
 		
+		$this->routing->respond('GET', '/ng/?', function ($request, $response, $service, $app) {
+			$response->file('/ng/index.html');
+		});
+		
+		/*$this->routing->respond('GET', '/ng/.+', function ($request, $response, $service, $app) {
+			return $response->file(__DIR__ . $request->pathname());
+		});*/
+		
 		// ---- transaction ----
 		
 		/*foreach(array('TransactionController') as $controller) {
