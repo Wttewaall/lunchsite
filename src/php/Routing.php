@@ -124,6 +124,7 @@ class Routing {
 			
 			$data = array(
 				'app'				=> $app,
+				'testData'			=> $app->dashboardRepository->getUserTotals2(),
 			    'userData'			=> $app->dashboardRepository->getUserTotals(),
 				'totalCash'			=> $app->dashboardRepository->getTotalCash(),
 				'totalBank'			=> $app->dashboardRepository->getTotalBank(),

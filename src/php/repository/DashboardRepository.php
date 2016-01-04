@@ -9,6 +9,94 @@ namespace Lunchpot;
  */
 class DashboardRepository extends Repository {
 	
+	public function getUserTotals2() {
+		$accountsSQL = "SELECT account.*
+			FROM accounts account
+			WHERE account.is_user AND account.deleted_date IS NULL";
+		$userAccounts = $this->connection->get_results($accountsSQL);
+		
+		foreach ($userAccounts as $userAccount) {
+			
+			// get all states per account id
+			$states = $this->getStatesByAccountId($userAccount->id);
+			
+			$states = $this->calculateStatesTotals($states);
+			
+			$debetTotal = 0;
+			$creditTotal = 0;
+			foreach ($states as $state) {
+				$debetTotal += ($state->roundsTotal * ($state->participation/100));
+				$creditTotal += $state->transactionsTotal;
+				//print($userAccount->first_name.': '.($state->transactionsTotal/100).' from '.$state->modified_date.' to '.$state->end_date.'<br/>');
+			}
+			
+			$settleAmount = $this->userTransactionTotalBeforeFirstState($userAccount->id);
+			//print($userAccount->first_name.' fix: '.($settleAmount/100).'<br/>');
+			
+			//print($userAccount->first_name.' debet:'.($debetTotal/100).', credit:'.($creditTotal/100).', settle:'.($settleAmount/100).', total:'.(($debetTotal - $creditTotal + $settleAmount) / 100).'<br/>');
+		}
+	}
+	
+	public function userTransactionTotalBeforeFirstState($account_id) {
+		$testSQL = "SELECT IFNULL(SUM(CASE
+					WHEN trans.fk_account_id = $account_id THEN IF(ts.code = 'BIJ', trans.amount, trans.amount * -1)
+					WHEN trans.fk_counterparty_account_id = $account_id THEN IF(ts.code = 'AF', trans.amount, trans.amount * -1)
+					ELSE 0
+				END), 0) AS total
+			FROM transactions trans
+			LEFT JOIN transaction_status ts ON trans.fk_transaction_status = ts.id
+			WHERE (trans.fk_account_id = $account_id OR trans.fk_counterparty_account_id = $account_id)
+			AND trans.`date` < (
+				SELECT state.modified_date
+				FROM account_state state
+				WHERE (state.fk_account_id = trans.fk_account_id OR state.fk_account_id = trans.fk_counterparty_account_id)
+				ORDER BY state.modified_date ASC LIMIT 1
+			)";
+		return $this->connection->get_var($testSQL);
+	}
+	
+	public function calculateStatesTotals($states) {
+		//get roundTotal per state period
+		foreach ($states as $state) {
+			
+			$roundsSumSQL = "SELECT SUM(rounds.amount) AS total
+				FROM monthly_rounds rounds
+				WHERE (rounds.`date` BETWEEN TIMESTAMP('$state->modified_date') AND TIMESTAMP('$state->end_date'))";
+			$state->roundsTotal = $this->connection->get_var($roundsSumSQL);
+			
+			$transactionsSumSQL = "SELECT IFNULL(SUM(CASE
+						WHEN trans.fk_account_id = $state->fk_account_id THEN IF(ts.code = 'BIJ', trans.amount, trans.amount * -1)
+						WHEN trans.fk_counterparty_account_id = $state->fk_account_id THEN IF(ts.code = 'AF', trans.amount, trans.amount * -1)
+						ELSE 0
+					END), 0) AS total
+
+				FROM transactions trans
+				LEFT JOIN transaction_status ts ON trans.fk_transaction_status = ts.id
+				WHERE (trans.fk_account_id = $state->fk_account_id OR trans.fk_counterparty_account_id = $state->fk_account_id)
+				AND (trans.`date` BETWEEN TIMESTAMP('$state->modified_date') AND TIMESTAMP('$state->end_date'))";
+			$state->transactionsTotal = $this->connection->get_var($transactionsSumSQL);
+		}
+		
+		return $states;
+	}
+	
+	// get all states per account with additional end_date (current date if the state hasn't ended yet)
+	public function getStatesByAccountId($account_id) {
+		$statesSQL = "SELECT state.*, IFNULL(
+				( SELECT next.modified_date
+					FROM account_state next
+					WHERE next.fk_account_id = state.fk_account_id
+						AND next.id > state.id
+						AND next.modified_date > state.modified_date
+					ORDER BY modified_date ASC LIMIT 1
+				), CURRENT_DATE()
+			) AS end_date
+			FROM account_state state
+			WHERE state.fk_account_id = $account_id";
+			
+		return $this->connection->get_results($statesSQL);
+	}
+	
 	public function getUserTotals() {
 		$sql = "SELECT
 				DISTINCT account.id,

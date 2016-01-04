@@ -121,7 +121,7 @@ class AccountRepository extends Repository {
 		return $result;
 	}
 	
-	public function getNonEmployeeAccounts() {
+	public function getNonUserAccounts() {
 		$accounts = $this->getAccounts(true);
 		
 		$result = array();
